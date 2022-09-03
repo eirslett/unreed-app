@@ -1,0 +1,20 @@
+name: Storybook
+on: [push]
+jobs:
+  build:
+    name: Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 16
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Storybook
+        run: npm run build:storybook

@@ -1,0 +1,38 @@
+{
+  "name": "unreed-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:prettier": "prettier --check .",
+    "lint:typescript": "tsc",
+    "build": "vite build",
+    "build:storybook": "build-storybook",
+    "storybook": "start-storybook"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eirslett/unreed-app.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eirslett/unreed-app/issues"
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "homepage": "https://github.com/eirslett/unreed-app#readme",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@storybook/builder-vite": "^0.2.2",
+    "@storybook/react": "^6.5.10",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.2",
+    "vite": "^3.0.9"
+  }
+}
