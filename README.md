@@ -29,6 +29,10 @@ npm install
 
 ## Available commands:
 
+### `npm run dev`
+
+This will start Unreed locally. Will be available on http://localhost:3000.
+
 ### `npm run storybook`
 
 The Storybook instance should now run on http://localhost:6006.
