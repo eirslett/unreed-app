@@ -9,7 +9,7 @@
     "lint:typescript": "tsc",
     "build": "vite build",
     "build:storybook": "build-storybook",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook -p 6006"
   },
   "repository": {
     "type": "git",
