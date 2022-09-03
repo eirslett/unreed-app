@@ -6,7 +6,7 @@ module.exports = {
   features: {
     storyStoreV7: true,
   },
-  stories: ['../src/**/*.stories.tsx'],
+  stories: ['../frontend/**/*.stories.tsx'],
   reactOptions: {
     fastRefresh: true,
   },
