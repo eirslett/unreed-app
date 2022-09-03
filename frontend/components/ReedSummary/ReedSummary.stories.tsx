@@ -19,6 +19,8 @@ export function Example() {
       stapleModel={'Chiarugi'}
       stapleLength={'47 mm'}
       tiedReedLength={'74 mm'}
+      currentLength="72 mm"
+      comments=""
     />
   );
 }
