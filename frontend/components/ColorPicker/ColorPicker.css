@@ -1,0 +1,21 @@
+.color-picker__opener {
+  border: 0;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.color-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.color-picker__block {
+  height: 80px;
+  border: 0;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  word-break: break-all;
+  box-sizing: border-box;
+}

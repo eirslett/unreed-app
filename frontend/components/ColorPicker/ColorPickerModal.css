@@ -1,0 +1,20 @@
+.color-picker__modal__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.color-picker__modal__inner {
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+  /* padding: 16px; */
+  /* subtle box shadow */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}

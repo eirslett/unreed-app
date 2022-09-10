@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "react-jsx",
+    "strict": true
   },
-  "include": [
-    "frontend/**/*"
-  ]
+  "include": ["frontend/**/*"]
 }
