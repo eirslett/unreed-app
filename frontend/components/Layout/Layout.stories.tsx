@@ -1,5 +1,6 @@
 import { Layout, LayoutTopbar, LayoutContent } from './Layout';
 import { Example as TopbarExample } from '../Topbar/Topbar.stories';
+import { PlaceholderText } from './PlaceholderText';
 
 export default {
   title: 'Layout',
@@ -7,8 +8,8 @@ export default {
 
 function VeryTallBox() {
   return (
-    <div style={{ height: '120vh', background: 'lightgrey' }}>
-      Placeholder content here
+    <div style={{ minHeight: '120vh' }}>
+      <PlaceholderText />
     </div>
   );
 }

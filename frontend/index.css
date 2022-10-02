@@ -3,3 +3,23 @@
 @import 'components/Layout/Layout.css';
 @import 'components/ReedSummary/ReedSummary.css';
 @import 'components/Topbar/Topbar.css';
+
+:root {
+  --color-earth: #edc7b7;
+  --color-sand: #eee2dc;
+  --color-mud: #bab2b5;
+  --color-ocean: #123c69;
+  --color-royal: #ac3b61;
+}
+
+@font-face {
+  font-family: 'Karla';
+  src: url('/fonts/Karla/Karla-VariableFont_wght.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Karla';
+  font-size: 14px;
+  font-variation-settings: 'wght' 300;
+  background: var(--color-sand);
+}
