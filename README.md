@@ -37,6 +37,8 @@ This will start Unreed locally. Will be available on http://localhost:3000.
 
 The Storybook instance should now run on http://localhost:6006.
 
+The built version of Storybook is also hosted on [https://eirslett.github.io/unreed-app/](https://eirslett.github.io/unreed-app/).
+
 ### `npm run lint:typescript`
 
 Any type errors should show up in the console.
