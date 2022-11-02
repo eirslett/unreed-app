@@ -1,12 +1,6 @@
 import { ReactNode, KeyboardEvent, MouseEvent, useEffect, useRef } from 'react';
 
-export function Modal({
-  children,
-  onClose,
-}: {
-  children?: ReactNode;
-  onClose?: () => void;
-}) {
+export function Modal({ children, onClose }: { children?: ReactNode; onClose?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const oldRef = useRef<Element>(document.activeElement);
 
@@ -56,11 +50,7 @@ export function Modal({
   }
 
   return (
-    <div
-      className="color-picker__modal__backdrop"
-      onClick={onClose}
-      onKeyDown={handleKeyDown}
-    >
+    <div className="color-picker__modal__backdrop" onClick={onClose} onKeyDown={handleKeyDown}>
       <div
         ref={ref}
         tabIndex={-1}

@@ -18,10 +18,7 @@ export async function setupStaticResources(app) {
     app.use(viteServer.middlewares);
 
     async function serveIndexHtml(req, res) {
-      const indexHtml = fs.readFileSync(
-        path.resolve(__dirname, '..', 'index.html'),
-        'utf-8'
-      );
+      const indexHtml = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf-8');
       const processed = await viteServer.transformIndexHtml('/', indexHtml);
       res.send(processed);
     }
@@ -29,8 +26,6 @@ export async function setupStaticResources(app) {
   } else {
     console.log('Running server in production mode');
     app.use(express.static(path.resolve(__dirname, '..', 'dist')));
-    app.use((req, res) =>
-      res.sendFile(path.resolve(__dirname, 'dist/index.html'))
-    );
+    app.use((req, res) => res.sendFile(path.resolve(__dirname, 'dist/index.html')));
   }
 }

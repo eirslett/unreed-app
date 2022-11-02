@@ -19,10 +19,7 @@ export function ColorPicker({
     <>
       <ColorPickerOpener value={value} onClick={handleOpenerClick} />
       {isSelecting ? (
-        <ColorPickerModal
-          onClose={() => setIsSelecting(false)}
-          onSelect={onChange}
-        />
+        <ColorPickerModal onClose={() => setIsSelecting(false)} onSelect={onChange} />
       ) : undefined}
     </>
   );
@@ -87,11 +84,7 @@ function ColorPickerModal({
   }
 }
 
-export function MainColorPicker({
-  onSelect,
-}: {
-  onSelect: (color: string) => void;
-}) {
+export function MainColorPicker({ onSelect }: { onSelect: (color: string) => void }) {
   return (
     <div className="color-picker__grid">
       {Object.entries(colors).map(([key, data]) => (

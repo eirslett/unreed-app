@@ -26,9 +26,7 @@ export function ReedSummary(data: ReedMeta) {
   }
 
   const cane =
-    information.length > 0
-      ? 'Cane: ' + information.map((str) => str + '').join(', ') + '.'
-      : '';
+    information.length > 0 ? 'Cane: ' + information.map((str) => str + '').join(', ') + '.' : '';
   const stapleInformation = [];
   if (data.stapleModel) {
     stapleInformation.push(data.stapleModel);
@@ -37,9 +35,7 @@ export function ReedSummary(data: ReedMeta) {
     stapleInformation.push(data.stapleLength);
   }
   const staple =
-    stapleInformation.length > 0
-      ? 'Staple: ' + stapleInformation.join(', ') + '.'
-      : '';
+    stapleInformation.length > 0 ? 'Staple: ' + stapleInformation.join(', ') + '.' : '';
 
   return (
     <div className="reed-summary">
