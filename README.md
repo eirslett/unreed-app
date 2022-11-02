@@ -1,3 +1,7 @@
+![Build](https://github.com/eirslett/unreed-app/actions/workflows/build.yml/badge.svg)
+![Lint](https://github.com/eirslett/unreed-app/actions/workflows/lint.yml/badge.svg)
+![Storybook](https://github.com/eirslett/unreed-app/actions/workflows/storybook.yml/badge.svg)
+
 # Unreed
 
 This is the main repository for the Unreed app.
