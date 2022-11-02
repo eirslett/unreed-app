@@ -1,13 +1,17 @@
 module.exports = {
   core: {
-    builder: '@storybook/builder-vite',
     disableTelemetry: true,
   },
-  features: {
-    storyStoreV7: true,
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
   },
   stories: ['../frontend/**/*.stories.tsx'],
   reactOptions: {
     fastRefresh: true,
+  },
+  typescript: {
+    checkOptions: {},
+    reactDocgen: false,
   },
 };
