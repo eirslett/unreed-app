@@ -37,7 +37,7 @@
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.2.0",
     "prettier": "^2.7.1",
-    "storybook": "7.0.0-alpha.47",
+    "storybook": "7.0.0-alpha.48",
     "typescript": "^4.8.4",
     "vite": "^3.2.2"
   }
