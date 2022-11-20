@@ -1,0 +1,19 @@
+{
+  "public": {
+    "keys": [
+      {
+        "kty": "EC",
+        "x": "F5y3MmnGID6hKJqUhYVMF_qhiKtQ3oviymcc4F1Ajck",
+        "y": "0YKnAnkE4MnTieythmo3z8Ou4rEmiuVGRBfTEPWGslo",
+        "crv": "P-256"
+      }
+    ]
+  },
+  "private": {
+    "kty": "EC",
+    "x": "F5y3MmnGID6hKJqUhYVMF_qhiKtQ3oviymcc4F1Ajck",
+    "y": "0YKnAnkE4MnTieythmo3z8Ou4rEmiuVGRBfTEPWGslo",
+    "crv": "P-256",
+    "d": "MAvYqc-TEYNH9TzWX5CXI97s-TkuLU_BPrXLMYhyjuM"
+  }
+}
