@@ -15,10 +15,10 @@ if (isDevelopment()) {
 }
 
 process.on('SIGINT', () => {
-  console.log('SIGINT');
+  console.log('\nShutting down (sigint)');
   process.exit(0);
 });
 process.on('SIGTERM', () => {
-  console.log('SIGTERM');
+  console.log('\nShutting down (sigterm)');
   process.exit(0);
 });

@@ -31,6 +31,7 @@ export async function setupIndexHtml(app) {
   if (isDevelopment()) {
     async function serveIndexHtml(req, res) {
       const indexHtml = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf-8');
+      const viteServer = await getViteServer();
       const processed = await viteServer.transformIndexHtml('/', indexHtml);
       res.send(processed);
     }
