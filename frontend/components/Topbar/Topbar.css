@@ -30,6 +30,9 @@
   padding: 4px;
   border-radius: 4px;
 }
+.topbar__button:hover {
+  background-color: white;
+}
 
 .topbar__button--right {
   margin-left: auto;
