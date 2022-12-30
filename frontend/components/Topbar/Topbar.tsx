@@ -1,14 +1,18 @@
+import { Link } from 'react-router-dom';
+
 export function Topbar() {
   return (
     <div className="topbar">
       <img className="topbar__logo" src="./logo.svg" alt="" />
-      <a className="topbar__link" href="#">
+      <Link className="topbar__link" to="/">
         Current reeds
-      </a>
-      <a className="topbar__link" href="#">
+      </Link>
+      <Link className="topbar__link" to="/discarded">
         Discarded reeds
-      </a>
-      <button className="topbar__button topbar__button--right">New reed</button>
+      </Link>
+      <Link className="topbar__button topbar__button--right" to="/new-reed">
+        New reed
+      </Link>
     </div>
   );
 }

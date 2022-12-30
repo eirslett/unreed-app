@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Router } from 'express';
 import * as jose from 'jose';
+import { OAuth2Client } from 'google-auth-library';
 import { isDevelopment } from './utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -54,7 +55,7 @@ async function productionLoginPage(req, res) {
 }
 
 function getRedirectUrl(req) {
-  return `${req.protocol}://${req.host}/login/callback`;
+  return `${req.protocol}://${req.get('host')}/login/callback`;
 }
 
 async function localhostCallbackPage(req, res) {
@@ -78,28 +79,44 @@ async function localhostCallbackPage(req, res) {
 }
 
 async function productionCallbackPage(req, res) {
-  const code = req.query.code;
-  const client = new OAuth2Client(CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, getRedirectUrl(req));
-  const googleToken = await client.getToken(code);
-  const googleClaims = jose.decodeJwt(googleToken.tokens.id_token);
+  try {
+    const code = req.query.code;
+    const client = new OAuth2Client(
+      CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      getRedirectUrl(req)
+    );
+    const googleToken = await client.getToken(code);
+    const googleClaims = jose.decodeJwt(googleToken.tokens.id_token);
 
-  const claims = {
-    email: googleClaims.email,
-  };
+    const claims = {
+      email: googleClaims.email,
+    };
 
-  const expirationTime = Date.now() + maxAge;
+    const expirationTime = Date.now() + maxAge;
 
-  const jwt = await new jose.SignJWT(claims)
-    .setProtectedHeader({ alg: 'ES256' })
-    .setIssuedAt()
-    .setIssuer(issuer)
-    .setAudience(audience)
-    .setExpirationTime(expirationTime)
-    .sign(privateKey);
+    const jwt = await new jose.SignJWT(claims)
+      .setProtectedHeader({ alg: 'ES256' })
+      .setIssuedAt()
+      .setIssuer(issuer)
+      .setAudience(audience)
+      .setExpirationTime(expirationTime)
+      .sign(privateKey);
 
-  res.cookie(AUTH_COOKIE, jwt, { maxAge: maxAge * 1000, httpOnly: true, path: '/', secure: true });
-  res.clearCookie(REDIRECT_URI_COOKIE);
-  res.redirect(req.cookies.UNREED_REDIRECT_URI ?? '/');
+    res.cookie(AUTH_COOKIE, jwt, {
+      maxAge: maxAge * 1000,
+      httpOnly: true,
+      path: '/',
+      secure: true,
+    });
+    res.clearCookie(REDIRECT_URI_COOKIE);
+    res.redirect(req.cookies.UNREED_REDIRECT_URI ?? '/');
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Server error - could not authenticate',
+    });
+  }
 }
 
 authRouter.get('/login', isDevelopment() ? localhostLoginPage : productionLoginPage);

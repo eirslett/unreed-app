@@ -1,3 +1,4 @@
+import { MemoryRouter } from 'react-router';
 import { Topbar } from './Topbar';
 
 export default {
@@ -5,5 +6,9 @@ export default {
 };
 
 export function Example() {
-  return <Topbar />;
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <Topbar />
+    </MemoryRouter>
+  );
 }

@@ -12,7 +12,8 @@ async function getViteServer() {
   if (!_viteServer) {
     const { createServer: createViteServer } = await import('vite');
     _viteServer = await createViteServer({
-      server: { middlewareMode: true, appType: 'custom' },
+      server: { middlewareMode: true },
+      appType: 'custom',
     });
   }
   return _viteServer;

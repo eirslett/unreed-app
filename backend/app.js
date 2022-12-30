@@ -14,6 +14,7 @@ app.get('/health', (req, res) => res.send({ status: 'OK' }));
 await setupStaticResources(app);
 
 app.use(authRouter);
+
 app.use(authMiddleware);
 
 await setupIndexHtml(app);

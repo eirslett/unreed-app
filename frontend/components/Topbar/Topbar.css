@@ -20,6 +20,15 @@
 }
 
 .topbar__button {
+  background-color: var(--color-sand);
+  text-decoration: none;
+  color: black;
+  user-select: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
 }
 
 .topbar__button--right {
