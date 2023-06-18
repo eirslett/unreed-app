@@ -37,7 +37,7 @@
     "react-router-dom": "^6.12.1"
   },
   "devDependencies": {
-    "@storybook/react-vite": "7.0.18",
+    "@storybook/react-vite": "7.0.22",
     "@types/react": "^18.2.12",
     "@types/react-dom": "^18.2.4",
     "@vitejs/plugin-react": "^4.0.0",
