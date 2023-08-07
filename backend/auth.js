@@ -84,7 +84,7 @@ async function productionCallbackPage(req, res) {
     const client = new OAuth2Client(
       CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      getRedirectUrl(req)
+      getRedirectUrl(req),
     );
     const googleToken = await client.getToken(code);
     const googleClaims = jose.decodeJwt(googleToken.tokens.id_token);
