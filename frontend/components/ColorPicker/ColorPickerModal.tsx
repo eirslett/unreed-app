@@ -14,7 +14,7 @@ export function Modal({ children, onClose }: { children?: ReactNode; onClose?: (
       // find next focusable inside the modal
       const focusable =
         ref.current?.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         ) ?? [];
       const firstFocusable = focusable[0] as HTMLElement;
       const lastFocusable = focusable[focusable.length - 1] as HTMLElement;
