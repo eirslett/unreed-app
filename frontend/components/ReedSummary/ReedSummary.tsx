@@ -1,6 +1,6 @@
-import { ReedMeta } from '../../types';
+import { ReedData } from '../../types';
 
-export function ReedSummary(data: ReedMeta) {
+export function ReedSummary(data: ReedData) {
   const information = [];
   if (data.caneProducer) {
     information.push(data.caneProducer);

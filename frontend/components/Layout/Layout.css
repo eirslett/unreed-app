@@ -10,4 +10,5 @@
 
 .layout__content {
   overflow: auto;
+  padding: 0 16px;
 }

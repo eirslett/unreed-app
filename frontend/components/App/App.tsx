@@ -1,6 +1,8 @@
 import { StrictMode, ReactNode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Auth } from '../Auth/Auth';
 import { Layout, LayoutTopbar, LayoutContent } from '../Layout/Layout';
+import { ReedOverview } from '../ReedOverview/ReedOverview';
 import { Topbar } from '../Topbar/Topbar';
 
 function Shell({ children }: { children?: ReactNode }) {
@@ -17,7 +19,11 @@ function Shell({ children }: { children?: ReactNode }) {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Shell>Hello world!</Shell>,
+    element: (
+      <Shell>
+        <ReedOverview />
+      </Shell>
+    ),
   },
   {
     path: '/new-reed',
@@ -32,7 +38,9 @@ const router = createBrowserRouter([
 export function App() {
   return (
     <StrictMode>
-      <RouterProvider router={router} />
+      <Auth>
+        <RouterProvider router={router} />
+      </Auth>
     </StrictMode>
   );
 }
