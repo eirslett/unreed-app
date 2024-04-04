@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import { authRouter, authMiddleware } from './auth.js';
+import { router } from './router.js';
 import { setupIndexHtml, setupStaticResources } from './static-resources.js';
 
 export const app = express();
@@ -17,8 +18,6 @@ app.use(authRouter);
 
 app.use(authMiddleware);
 
-await setupIndexHtml(app);
+app.use(router);
 
-app.get('/foo', (req, res) => {
-  res.send('Hello world!');
-});
+await setupIndexHtml(app);

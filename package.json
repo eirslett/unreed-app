@@ -11,7 +11,9 @@
     "lint:typescript": "tsc",
     "build": "vite build",
     "build:storybook": "storybook build",
-    "storybook": "storybook dev -p 6006"
+    "storybook": "storybook dev -p 6006",
+    "db:setup": "./backend/db/setup-local-db.sh",
+    "db:testdata": "node backend/db/generate-testdata.js"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,7 @@
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@storybook/react-vite": "8.0.1",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.23",

@@ -13,6 +13,7 @@ Prerequisites/tools you have to install:
 - git
 - Node.js (and npm)
 - A code editor (for example: Visual Studio Code)
+- MySQL
 
 ### Tools that come automatically with this project
 
