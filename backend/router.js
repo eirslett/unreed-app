@@ -43,6 +43,7 @@ router.get('/api/reed_log.php', (req, res) => {
         const entries = results.map((row) => {
           return {
             ...row,
+            entry_timestamp: parseInt(row.entry_timestamp),
             data: JSON.parse(row.data),
           };
         });

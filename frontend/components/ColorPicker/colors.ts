@@ -1,4 +1,4 @@
-const colors: {
+export const colors: {
   [maincolor: string]: {
     sub: { [subcolor: string]: string };
   };
@@ -293,7 +293,6 @@ const colors: {
   },
 };
 
-export default colors;
 export const codeForSubcolor: { [key: string]: string } = {};
 export const maincolorsForSubcolor: { [key: string]: string } = {};
 

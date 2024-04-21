@@ -11,8 +11,16 @@
   --color-ocean: #123c69;
   --color-royal: #ac3b61;
 
+  --font-size-small: 12px;
   --font-size-medium: 16px;
   --font-size-large: 20px;
+}
+
+/* the universal box-sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 @font-face {

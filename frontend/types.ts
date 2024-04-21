@@ -110,13 +110,13 @@ export type ReedHistory =
   | ClipHistoryEntry
   | DiscardHistoryEntry;
 
-interface Reed {
+export type Reed = {
   lastUpdate: number;
   lastComment: string;
   discarded: boolean;
   data: ReedData;
   history: Array<ReedHistory>;
-}
+};
 
 export type ReedState = {
   recentReeds: RecentReedsState;

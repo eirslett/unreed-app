@@ -1,4 +1,4 @@
-import colors from './colors';
+import { colors } from './colors';
 
 export function findColorHex(colorName: string): string | undefined {
   for (const mainColor of Object.keys(colors)) {

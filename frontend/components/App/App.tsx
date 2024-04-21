@@ -4,6 +4,7 @@ import { Auth } from '../Auth/Auth';
 import { Layout, LayoutTopbar, LayoutContent } from '../Layout/Layout';
 import { ReedOverview } from '../ReedOverview/ReedOverview';
 import { Topbar } from '../Topbar/Topbar';
+import { Data } from '../Data/Data';
 
 function Shell({ children }: { children?: ReactNode }) {
   return (
@@ -39,7 +40,9 @@ export function App() {
   return (
     <StrictMode>
       <Auth>
-        <RouterProvider router={router} />
+        <Data>
+          <RouterProvider router={router} />
+        </Data>
       </Auth>
     </StrictMode>
   );

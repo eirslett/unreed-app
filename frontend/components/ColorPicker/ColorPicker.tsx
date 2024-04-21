@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState } from 'react';
-import colors from './colors';
+import { colors } from './colors';
 import { Modal } from './ColorPickerModal';
 import { findColorHex, getBestContrastColor } from './utils';
 

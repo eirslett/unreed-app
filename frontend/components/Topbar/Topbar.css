@@ -1,9 +1,9 @@
 .topbar {
-  height: 40px;
+  min-height: 40px;
   background-color: var(--color-ocean);
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 4px;
   gap: 8px;
   box-sizing: border-box;
   font-size: var(--font-size-large);
@@ -11,7 +11,7 @@
 }
 
 .topbar__logo {
-  max-height: 100%;
+  height: 32px;
 }
 
 .topbar__link {

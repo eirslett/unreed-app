@@ -1,5 +1,98 @@
 .reed-summary {
-  border: 1px solid black;
-  border-radius: 4px;
-  padding: 4px;
+  --swatch-width: 10px;
+  --padding-size: 8px;
+  --border-radius: 8px;
+  --border-width: 2px;
+
+  --clamped-border-color: solid hsl(from var(--reed-color, black) h s clamp(0, l, 0.7));
+
+  position: relative;
+  border-radius: var(--border-radius);
+  /* border: var(--border-width) solid transparent; */
+  padding: var(--padding-size) var(--padding-size) var(--padding-size)
+    calc(var(--swatch-width) + var(--padding-size));
+  background: white;
+
+  display: grid;
+  grid-template-areas:
+    'title last-update'
+    'meta meta'
+    'comments comments';
+
+  overflow-wrap: anywhere;
+
+  outline: 0;
+
+  /* remove styling that comes with <a> */
+  color: inherit;
+  text-decoration: none;
+}
+
+.reed-summary::after {
+  visibility: hidden;
+  position: absolute;
+  display: block;
+  content: '';
+  inset: 0;
+  border-radius: var(--border-radius);
+  border: var(--border-width) var(--clamped-border-color);
+}
+
+.reed-summary:hover::after {
+  visibility: visible;
+}
+
+.reed-summary:focus-visible::after {
+  visibility: visible;
+  --border-width: 4px;
+}
+
+.reed-summary__title {
+  grid-area: title;
+  display: grid;
+  justify-items: start;
+  align-items: center;
+  margin: 0;
+  font-size: var(--font-size-large);
+  font-weight: bold;
+}
+.reed-summary__last-update {
+  grid-area: last-update;
+  display: grid;
+  justify-items: end;
+  align-items: center;
+}
+.reed-summary__meta {
+  grid-area: meta;
+  margin: 4px;
+  font-size: var(--font-size-small);
+}
+.reed-summary__comments {
+  grid-area: comments;
+  font-size: var(--font-size-medium);
+}
+
+.reed-summary::before {
+  --inset-width: calc(-1 * var(--border-width));
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--swatch-width);
+
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  display: block;
+  content: '';
+  width: 10px;
+  background: var(--reed-color);
+}
+
+.reed-overview__grid {
+  /* grid layout: min-width of 400px. Gap 16px. */
+  /* maximum two tiles wide per row. */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px 0;
 }

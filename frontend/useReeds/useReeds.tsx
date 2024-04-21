@@ -7,7 +7,6 @@ const initial: ReedState = {
   discardedReeds: [],
   reeds: {},
 };
-export function useReeds(): ReedState {
-  const [state, dispatch] = useReducer(reedReducer, initial);
-  return state;
+export function useReeds() {
+  return useReducer(reedReducer, initial);
 }
