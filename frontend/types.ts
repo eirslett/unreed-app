@@ -8,6 +8,17 @@ interface LogEntryBase {
 }
 
 export type ReedType = 'oboe' | 'english-horn';
+export function instrumentName(id: ReedType) {
+  switch (id) {
+    case 'oboe':
+      return 'Oboe';
+    case 'english-horn':
+      return 'English horn';
+    default:
+      return id;
+  }
+}
+
 export interface ReedData {
   reedType: ReedType;
   reedIdentification: string;

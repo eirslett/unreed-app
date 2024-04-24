@@ -1,4 +1,5 @@
-import { Reed, ReedData } from '../../types';
+import * as timeago from 'timeago.js';
+import { Reed, ReedData, instrumentName } from '../../types';
 import { findColorHex } from '../ColorPicker/utils';
 import { timestampToLocaleFormattedDate } from '../../utils/date';
 
@@ -8,6 +9,11 @@ function keyValue(key: string, value: string) {
 }
 
 export function ReedSummary({ data, lastComment, lastUpdate }: Reed) {
+  const moreThanOneWeekOld = Date.now() - lastUpdate * 1000 > 1000 * 60 * 60 * 24 * 7;
+  const lastUpdatedText = moreThanOneWeekOld
+    ? timestampToLocaleFormattedDate(lastUpdate)
+    : timeago.format(lastUpdate * 1000);
+
   const information = [];
   if (data.caneProducer) {
     information.push(data.caneProducer);
@@ -54,11 +60,9 @@ export function ReedSummary({ data, lastComment, lastUpdate }: Reed) {
   return (
     <a href="#" className="reed-summary" style={style}>
       <h2 className="reed-summary__title">{data.reedIdentification}</h2>
-      <span className="reed-summary__last-update">
-        {timestampToLocaleFormattedDate(lastUpdate)}
-      </span>
+      <div className="reed-summary__last-update">{lastUpdatedText}</div>
       <div className="reed-summary__meta">
-        {cane} {staple}
+        {cane} {staple} ({instrumentName(data.reedType)})
       </div>
       <div className="reed-summary__comments">{lastComment}</div>
     </a>

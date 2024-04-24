@@ -49,23 +49,22 @@
 
 .reed-summary__title {
   grid-area: title;
-  display: grid;
-  justify-items: start;
-  align-items: center;
   margin: 0;
   font-size: var(--font-size-large);
   font-weight: bold;
+  color: var(--color-dark);
 }
 .reed-summary__last-update {
   grid-area: last-update;
-  display: grid;
-  justify-items: end;
-  align-items: center;
+  text-align: right;
+  font-size: var(--font-size-small);
+  color: var(--color-light);
 }
 .reed-summary__meta {
   grid-area: meta;
   margin: 4px;
   font-size: var(--font-size-small);
+  color: var(--color-light);
 }
 .reed-summary__comments {
   grid-area: comments;

@@ -14,6 +14,10 @@
   --font-size-small: 12px;
   --font-size-medium: 16px;
   --font-size-large: 20px;
+
+  --color-base: #3a3a3a;
+  --color-dark: #10101f;
+  --color-light: #6a6a6a;
 }
 
 /* the universal box-sizing reset */
@@ -34,4 +38,5 @@ body {
   font-size: var(--font-size-medium);
   font-variation-settings: 'wght' 300;
   background: var(--color-sand);
+  color: var(--color-base);
 }

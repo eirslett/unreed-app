@@ -66,16 +66,6 @@ router.get('/api/pull', (req, res) => {
 
   const connection = getConnection();
 
-  console.log(
-    'Getting entries after',
-    updatedAt,
-    'with limit',
-    limit,
-    'for',
-    req.user.email,
-    '...',
-  );
-
   connection.connect();
   connection.query(
     'SELECT entry_id, entry_timestamp, reed_id, entry_type, data from reed_log WHERE google_profile_id=? AND entry_timestamp>? OR entry_timestamp=? AND entry_id>? ORDER BY entry_timestamp ASC, entry_id ASC LIMIT ?',

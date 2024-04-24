@@ -50,11 +50,13 @@ async function boot(): Promise<UnreedDatabase> {
       },
       reed_id: {
         type: 'string',
+        maxLength: 36,
       },
       data: {
         type: 'object',
       },
     },
+    indexes: ['reed_id'],
     required: ['entry_id', 'entry_type', 'entry_timestamp', 'reed_id'],
   };
 
