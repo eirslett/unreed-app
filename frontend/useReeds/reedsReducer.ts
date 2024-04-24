@@ -6,13 +6,20 @@ import {
   RecentReedsState,
   ReedsState,
 } from '../types';
+import { initial } from './initialState';
 
-export function reedReducer(state: ReedState, action: LogEntry): ReedState {
-  return {
-    ...state,
-    recentReeds: recentReedsReducer(state.recentReeds, action),
-    reeds: reedsReducer(state.reeds, action),
-  };
+export type ClearAction = { entry_type: 'clear' };
+
+export function reedReducer(state: ReedState, action: LogEntry | ClearAction): ReedState {
+  if (action.entry_type === 'clear') {
+    return initial;
+  } else {
+    return {
+      ...state,
+      recentReeds: recentReedsReducer(state.recentReeds, action),
+      reeds: reedsReducer(state.reeds, action),
+    };
+  }
 }
 
 export function recentReedsReducer(recent: RecentReedsState, logEntry: LogEntry): RecentReedsState {

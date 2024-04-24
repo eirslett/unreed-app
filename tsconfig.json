@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
     "noEmit": true,
     "jsx": "react-jsx",
-    "strict": true
+    "strict": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler"
   },
   "include": ["frontend/**/*"]
 }

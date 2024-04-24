@@ -29,10 +29,12 @@ for (let i = 100; i > 0; i--) {
     entries.push(discardEntry);
   }
 
+  const timeForCommentAndScrapeEntry = makeTime();
+
   const commentEntry = {
     entry_id: faker.string.uuid(),
     google_profile_id: email,
-    entry_timestamp: makeTime(),
+    entry_timestamp: timeForCommentAndScrapeEntry,
     reed_id: id,
     entry_type: 'comment',
     data: JSON.stringify({
@@ -44,7 +46,7 @@ for (let i = 100; i > 0; i--) {
   const scrapeEntry = {
     entry_id: faker.string.uuid(),
     google_profile_id: email,
-    entry_timestamp: makeTime(),
+    entry_timestamp: timeForCommentAndScrapeEntry,
     reed_id: id,
     entry_type: 'scrape',
     data: JSON.stringify({

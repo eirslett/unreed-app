@@ -1,12 +1,8 @@
 import { useReducer } from 'react';
 import { LogEntry, ReedState } from '../types';
 import { reedReducer } from './reedsReducer';
+import { initial } from './initialState';
 
-const initial: ReedState = {
-  recentReeds: [],
-  discardedReeds: [],
-  reeds: {},
-};
 export function useReeds() {
   return useReducer(reedReducer, initial);
 }

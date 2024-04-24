@@ -53,3 +53,59 @@ router.get('/api/reed_log.php', (req, res) => {
     },
   );
 });
+
+router.get('/api/pull', (req, res) => {
+  if (!req.user) {
+    res.status(401).send({ message: 'Invalid token.' });
+    return;
+  }
+
+  const id = req.query.id;
+  const updatedAt = parseFloat(req.query.updatedAt);
+  const limit = parseInt(req.query.limit);
+
+  const connection = getConnection();
+
+  console.log(
+    'Getting entries after',
+    updatedAt,
+    'with limit',
+    limit,
+    'for',
+    req.user.email,
+    '...',
+  );
+
+  connection.connect();
+  connection.query(
+    'SELECT entry_id, entry_timestamp, reed_id, entry_type, data from reed_log WHERE google_profile_id=? AND entry_timestamp>? OR entry_timestamp=? AND entry_id>? ORDER BY entry_timestamp ASC, entry_id ASC LIMIT ?',
+    [req.user.email, updatedAt, updatedAt, id, limit],
+    function (error, results) {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Something went wrong on the server.' });
+        connection.end();
+      } else {
+        const entries = results.map((row) => {
+          return {
+            ...row,
+            entry_timestamp: parseInt(row.entry_timestamp),
+            data: JSON.parse(row.data),
+          };
+        });
+        const newCheckpoint =
+          entries.length > 0
+            ? {
+                id: entries[entries.length - 1].entry_id,
+                updatedAt: entries[entries.length - 1].entry_timestamp,
+              }
+            : { id, updatedAt };
+        res.send({
+          documents: entries,
+          checkpoint: newCheckpoint,
+        });
+        connection.end();
+      }
+    },
+  );
+});
