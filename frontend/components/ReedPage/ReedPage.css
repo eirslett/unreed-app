@@ -9,7 +9,7 @@
 
   position: relative;
   border-radius: var(--border-radius);
-  padding: var(--padding-size) var(--padding-size) var(--padding-size)
+  padding: calc(2 * var(--padding-size)) var(--padding-size) var(--padding-size)
     calc(var(--swatch-width) + var(--padding-size));
   margin: 16px 0;
 
