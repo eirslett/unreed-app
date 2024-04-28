@@ -120,7 +120,6 @@ export function Data({ children }: { children?: ReactNode }) {
           .find()
           .sort({ entry_timestamp: 'asc' })
           .$.subscribe((changes: LogEntry[]) => {
-            console.log('query result', changes);
             dispatch({ entry_type: 'clear' });
             changes.forEach(dispatch);
           });

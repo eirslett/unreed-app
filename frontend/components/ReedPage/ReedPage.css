@@ -12,23 +12,12 @@
   padding: var(--padding-size) var(--padding-size) var(--padding-size)
     calc(var(--swatch-width) + var(--padding-size));
   margin: 16px 0;
+
   background: var(--clamped-background-color);
-}
+  /* background: var(--color-almost-white); */
 
-.reed-page::before {
-  --inset-width: calc(-1 * var(--border-width));
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: var(--swatch-width);
-
-  border-top-left-radius: var(--border-radius);
-  border-bottom-left-radius: var(--border-radius);
-  display: block;
-  content: '';
-  width: 10px;
-  background: var(--reed-color);
+  border: var(--border-width) solid var(--reed-color);
+  border-left-width: var(--swatch-width);
 }
 
 .reed-page__header {
@@ -134,6 +123,7 @@
 
 .reed-page__entry {
   background: var(--color-almost-white);
+  /* background: var(--clamped-background-color); */
   padding: 16px;
   margin: 8px 0;
   border-radius: 8px;

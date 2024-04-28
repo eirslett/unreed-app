@@ -2,7 +2,8 @@ import * as timeago from 'timeago.js';
 import { Reed, ReedData, instrumentName } from '../../types';
 import { findColorHex } from '../ColorPicker/utils';
 import { timestampToLocaleFormattedDate } from '../../utils/date';
-import { Link } from 'react-router-dom';
+import { Link, unstable_useViewTransitionState } from 'react-router-dom';
+import { useState } from 'react';
 
 function keyValue(key: string, value: string) {
   // key: value but with non-breaking space
@@ -53,13 +54,27 @@ export function ReedSummary({ id, data, lastComment, lastUpdate }: Reed & { id: 
   const staple =
     stapleInformation.length > 0 ? 'Staple:\u00a0' + stapleInformation.join(',\u00a0') + '.' : '';
 
+  const [viewTransition, setViewTransition] = useState<boolean>(false);
+
+  const to = '/reed/' + id;
+
+  const isTransitioning = unstable_useViewTransitionState(to);
+
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
     '--reed-color': findColorHex(data.threadColor),
+    viewTransitionName: isTransitioning ? 'reed-card' : undefined, // reed-card-' + id,
   };
 
   return (
-    <Link to={'/reed/' + id} className="reed-summary" style={style}>
+    <Link
+      onClick={() => setViewTransition(true)}
+      onBlur={() => setViewTransition(true)}
+      unstable_viewTransition
+      to={to}
+      className="reed-summary"
+      style={style}
+    >
       <h2 className="reed-summary__title">{data.reedIdentification}</h2>
       <div className="reed-summary__last-update">{lastUpdatedText}</div>
       <div className="reed-summary__meta">

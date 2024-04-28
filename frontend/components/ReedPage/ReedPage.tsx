@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useParams } from 'react-router';
 import clsx from 'clsx';
 import { Reed, ReedHistory, instrumentName } from '../../types';
@@ -16,7 +16,6 @@ export function ReedRoute() {
   if (reed === undefined) {
     return <div></div>;
   }
-  console.log(reed);
   return <ReedPage reed={reed} />;
 }
 
@@ -113,7 +112,17 @@ export function ReedPage({ reed }: { reed: Reed }) {
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
     '--reed-color': findColorHex(reed.data.threadColor),
+    viewTransitionName: 'reed-card', // 'reed-card-' + reed.data.reedIdentification,
   };
+
+  /*
+  useEffect(() => {
+    document.body.style.background = findColorHex(reed.data.threadColor);
+    return () => {
+      document.body.style.background = '';
+    };
+  }, [reed.data.threadColor]);
+  */
 
   return (
     <article className="reed-page" style={style}>
