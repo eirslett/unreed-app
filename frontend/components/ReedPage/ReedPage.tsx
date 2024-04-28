@@ -5,6 +5,7 @@ import { Reed, ReedHistory, instrumentName } from '../../types';
 import { findColorHex } from '../ColorPicker/utils';
 import { useData } from '../Data/Data';
 import { timestampToLocaleFormattedDate } from '../../utils/date';
+import { useNavigate } from 'react-router-dom';
 
 export function ReedRoute() {
   const data = useData();
@@ -124,11 +125,31 @@ export function ReedPage({ reed }: { reed: Reed }) {
   }, [reed.data.threadColor]);
   */
 
+  function BackButton() {
+    const navigate = useNavigate();
+    return (
+      <button className="reed-page__back-button" aria-label="Back" onClick={() => navigate(-1)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          fill="currentColor"
+        >
+          <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+        </svg>
+      </button>
+    );
+  }
+
   return (
     <article className="reed-page" style={style}>
       <div className="reed-page__two-columns">
         <div className="reed-page__descriptions">
-          <h1 className="reed-page__header reed-page__h1">{reed.data.reedIdentification}</h1>
+          <div className="reed-page__header">
+            <BackButton />
+            <h1 className="reed-page__h1">{reed.data.reedIdentification}</h1>
+          </div>
           <Descriptions
             {...{
               'Reed type': instrumentName(reed.data.reedType),
