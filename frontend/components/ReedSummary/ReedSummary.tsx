@@ -2,13 +2,14 @@ import * as timeago from 'timeago.js';
 import { Reed, ReedData, instrumentName } from '../../types';
 import { findColorHex } from '../ColorPicker/utils';
 import { timestampToLocaleFormattedDate } from '../../utils/date';
+import { Link } from 'react-router-dom';
 
 function keyValue(key: string, value: string) {
   // key: value but with non-breaking space
   return `${key}:\u00a0${value.replace(/ /g, '\u00a0')}`;
 }
 
-export function ReedSummary({ data, lastComment, lastUpdate }: Reed) {
+export function ReedSummary({ id, data, lastComment, lastUpdate }: Reed & { id: string }) {
   const moreThanOneWeekOld = Date.now() - lastUpdate * 1000 > 1000 * 60 * 60 * 24 * 7;
   const lastUpdatedText = moreThanOneWeekOld
     ? timestampToLocaleFormattedDate(lastUpdate)
@@ -58,13 +59,13 @@ export function ReedSummary({ data, lastComment, lastUpdate }: Reed) {
   };
 
   return (
-    <a href="#" className="reed-summary" style={style}>
+    <Link to={'/reed/' + id} className="reed-summary" style={style}>
       <h2 className="reed-summary__title">{data.reedIdentification}</h2>
       <div className="reed-summary__last-update">{lastUpdatedText}</div>
       <div className="reed-summary__meta">
         {cane} {staple} ({instrumentName(data.reedType)})
       </div>
       <div className="reed-summary__comments">{lastComment}</div>
-    </a>
+    </Link>
   );
 }

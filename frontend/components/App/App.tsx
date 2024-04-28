@@ -5,6 +5,7 @@ import { Layout, LayoutTopbar, LayoutContent } from '../Layout/Layout';
 import { ReedOverview } from '../ReedOverview/ReedOverview';
 import { Topbar } from '../Topbar/Topbar';
 import { Data } from '../Data/Data';
+import { ReedRoute } from '../ReedPage/ReedPage';
 
 function Shell({ children }: { children?: ReactNode }) {
   return (
@@ -23,6 +24,14 @@ const router = createBrowserRouter([
     element: (
       <Shell>
         <ReedOverview />
+      </Shell>
+    ),
+  },
+  {
+    path: '/reed/:id',
+    element: (
+      <Shell>
+        <ReedRoute />
       </Shell>
     ),
   },

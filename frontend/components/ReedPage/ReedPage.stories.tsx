@@ -1,18 +1,8 @@
-import { StoryFn } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
 import { Reed } from '../../types';
-import { ReedSummary } from './ReedSummary';
+import { ReedPage } from './ReedPage';
 
 export default {
-  title: 'Reed Summary',
-  // decorate with react router memory router
-  decorators: [
-    (Story: StoryFn) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
+  title: 'Reed Page',
 };
 
 export function Example() {
@@ -33,11 +23,22 @@ export function Example() {
       currentLength: '72 mm',
       comments: '',
     },
-    history: [],
+    history: [
+      { time: 1713572479, action: 'comment', comments: 'index 1080p panel' },
+      { time: 1713572479, action: 'scrape', comments: 'synthesize mobile bandwidth' },
+      {
+        time: 1713493808,
+        action: 'play',
+        duration: '75 min',
+        comment: 'synthesize auxiliary sensor',
+      },
+      { time: 1713421858, action: 'clip', length: '73 mm' },
+      { time: 1713396267, action: 'create', comments: 'input solid state protocol' },
+    ],
     lastComment: 'last comment',
     lastUpdate: 1713716814,
     discarded: false,
   };
 
-  return <ReedSummary id="" {...reed} />;
+  return <ReedPage reed={reed} />;
 }

@@ -15,7 +15,7 @@ export function ReedOverview() {
       <LayoutContent>
         <div className="reed-overview__grid">
           {data.reeds.recentReeds.map((id) => (
-            <ReedSummary key={id} {...data.reeds.reeds[id]} />
+            <ReedSummary key={id} id={id} {...data.reeds.reeds[id]} />
           ))}
         </div>
       </LayoutContent>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export function Topbar() {
   return (
     <div className="topbar">
-      <img className="topbar__logo" src="./logo.svg" alt="" />
+      <img className="topbar__logo" src="/logo.svg" alt="" />
       <Link className="topbar__link" to="/">
         Current reeds
       </Link>

@@ -1,0 +1,152 @@
+.reed-page {
+  --swatch-width: 10px;
+  --padding-size: 8px;
+  --border-radius: 8px;
+  --border-width: 2px;
+
+  --clamped-border-color: solid hsl(from var(--reed-color, black) h s clamp(0, l, 0.7));
+  --clamped-background-color: hsl(from var(--reed-color, black) h s clamp(0.95, l, 1));
+
+  position: relative;
+  border-radius: var(--border-radius);
+  padding: var(--padding-size) var(--padding-size) var(--padding-size)
+    calc(var(--swatch-width) + var(--padding-size));
+  margin: 16px 0;
+  background: var(--clamped-background-color);
+}
+
+.reed-page::before {
+  --inset-width: calc(-1 * var(--border-width));
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--swatch-width);
+
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  display: block;
+  content: '';
+  width: 10px;
+  background: var(--reed-color);
+}
+
+.reed-page__header {
+  grid-area: title;
+}
+
+.reed-page__h1 {
+  margin: 0;
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  color: var(--color-dark);
+}
+
+.reed-page__h2 {
+  margin: 0;
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  color: var(--color-base);
+}
+
+.reed-page__two-columns {
+  display: flex;
+  gap: 32px;
+}
+
+/* wrap on small screens */
+@media (max-width: 600px) {
+  .reed-page__two-columns {
+    flex-direction: column;
+  }
+}
+
+.reed-page__descriptions {
+  flex-shrink: 0;
+}
+
+.reed-page__history {
+}
+
+.reed-page__dl {
+  display: grid;
+  grid-template-columns: minmax(auto, 160px) 1fr;
+  gap: 16px;
+}
+
+.reed-page__dt {
+  margin: 0;
+  color: var(--color-light);
+}
+
+.reed-page__dd {
+  margin: 0;
+  display: block;
+}
+
+.reed-page__hr {
+  height: 1px;
+  border: none;
+  background-color: var(--reed-color);
+}
+
+.reed-page__action-button {
+  --color-base: var(--color-marijuana);
+  --color-hover: var(--color-marijuana-light);
+
+  color: white;
+
+  border-radius: 4px;
+  background-color: var(--color-base);
+  border: 1px solid var(--color-sand);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  height: 32px;
+
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.reed-page__action-button:hover {
+  background-color: var(--color-hover);
+  cursor: pointer;
+}
+
+.reed-page__action-button:focus-visible {
+  outline: 2px solid var(--color-hover);
+  background-color: var(--color-hover);
+}
+
+.reed-page__action-button--warning {
+  /* a red warning-like color but not as intense as #ff0000 */
+  --color-base: #ff4444;
+  --color-hover: #f00000;
+}
+
+.reed-page__action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 16px 0;
+}
+
+.reed-page__entry {
+  background: var(--color-almost-white);
+  padding: 16px;
+  margin: 8px 0;
+  border-radius: 8px;
+
+  /* gentle box-shadow */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.reed-page__entry-time {
+  color: var(--color-light);
+  margin-bottom: 8px;
+}
+
+.reed-page__event__primary-text {
+  color: var(--color-marijuana);
+}

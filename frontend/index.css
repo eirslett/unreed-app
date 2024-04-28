@@ -3,21 +3,26 @@
 @import 'components/Layout/Layout.css';
 @import 'components/ReedSummary/ReedSummary.css';
 @import 'components/Topbar/Topbar.css';
+@import 'components/ReedPage/ReedPage.css';
 
 :root {
   --color-earth: #edc7b7;
   --color-sand: #eee2dc;
   --color-mud: #bab2b5;
   --color-ocean: #123c69;
+  --color-sunny: #f4a261;
+  --color-marijuana: #2a9d8f;
+  --color-marijuana-light: #4dcb9f;
   --color-royal: #ac3b61;
 
   --font-size-small: 12px;
   --font-size-medium: 16px;
   --font-size-large: 20px;
 
-  --color-base: #3a3a3a;
+  --color-base: #2a2a2a;
   --color-dark: #10101f;
-  --color-light: #6a6a6a;
+  --color-light: #5a5a5a;
+  --color-almost-white: #f6f6f6;
 }
 
 /* the universal box-sizing reset */
@@ -37,6 +42,7 @@ body {
   font-family: 'Tahoma', sans-serif;
   font-size: var(--font-size-medium);
   font-variation-settings: 'wght' 300;
+  background: var(--color-almost-white);
   background: var(--color-sand);
   color: var(--color-base);
 }
