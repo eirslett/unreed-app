@@ -1,18 +1,10 @@
-import { StoryFn } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { Reed } from '../../types';
 import { ReedSummary } from './ReedSummary';
 
 export default {
   title: 'Reed Summary',
   // decorate with react router memory router
-  decorators: [
-    (Story: StoryFn) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
 };
 
 export function Example() {

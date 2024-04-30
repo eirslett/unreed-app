@@ -6,9 +6,5 @@ export default {
 };
 
 export function Example() {
-  return (
-    <MemoryRouter initialEntries={['/']}>
-      <Topbar />
-    </MemoryRouter>
-  );
+  return <Topbar />;
 }

@@ -6,6 +6,7 @@ import { replicateRxCollection } from 'rxdb/plugins/replication';
 import { ReactNode, createContext, useContext, useEffect, useRef } from 'react';
 import { LogEntry, ReedState } from '../../types';
 import { useReeds } from '../../useReeds/useReeds';
+import { useUsername } from '../Auth/Auth';
 
 type DataContextType = {
   reeds: ReedState;
@@ -16,7 +17,7 @@ type DatabaseCollections = {
 };
 type UnreedDatabase = RxDatabase<DatabaseCollections>;
 
-async function boot(): Promise<UnreedDatabase> {
+async function boot({ username }: { username: string }): Promise<UnreedDatabase> {
   console.log('in boot()');
 
   // @ts-expect-error DEV is a boolean which comes from Vite
@@ -28,9 +29,16 @@ async function boot(): Promise<UnreedDatabase> {
   addRxPlugin(RxDBQueryBuilderPlugin);
 
   const database: UnreedDatabase = await createRxDatabase({
-    name: 'heroesdb', // <- name
+    name: makeDatabaseName(username),
     storage: getRxStorageDexie(), // <- RxStorage
   });
+
+  function makeDatabaseName(username: string) {
+    let string = username.replace(/@/, '-at-');
+    string = string.replace(/\./g, '-dot-');
+    string = string.replace(/[^a-z_$0-9-]/g, '-');
+    return 'unreed-' + string;
+  }
 
   const schema = {
     title: 'entry schema',
@@ -106,12 +114,14 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 export function Data({ children }: { children?: ReactNode }) {
   const [reeds, dispatch] = useReeds();
 
+  const username = useUsername();
+
   const dbRef = useRef<Promise<UnreedDatabase> | undefined>(undefined);
   useEffect(() => {
     console.log('in effect');
     if (dbRef.current === undefined) {
       console.log('booting');
-      dbRef.current = boot();
+      dbRef.current = boot({ username });
 
       dbRef.current.then(async (db: UnreedDatabase) => {
         console.log('booted');
@@ -129,7 +139,7 @@ export function Data({ children }: { children?: ReactNode }) {
     return () => {
       // do no cleanup
     };
-  }, []);
+  }, [username]);
 
   const data = {
     reeds,

@@ -1,5 +1,6 @@
 @import 'components/ColorPicker/ColorPicker.css';
 @import 'components/ColorPicker/ColorPickerModal.css';
+@import 'components/Modal/Modal.css';
 @import 'components/Layout/Layout.css';
 @import 'components/ReedSummary/ReedSummary.css';
 @import 'components/Topbar/Topbar.css';
