@@ -10,6 +10,7 @@ import { useUsername } from '../Auth/Auth';
 
 type DataContextType = {
   reeds: ReedState;
+  write(entry: LogEntry): void;
 };
 
 type DatabaseCollections = {
@@ -141,8 +142,16 @@ export function Data({ children }: { children?: ReactNode }) {
     };
   }, [username]);
 
+  function write(entry: LogEntry) {
+    console.log('writing entry', entry);
+    dbRef.current?.then(async (db: UnreedDatabase) => {
+      await db.entries.insert(entry);
+    });
+  }
+
   const data = {
     reeds,
+    write,
   };
 
   return <DataContext.Provider value={data}>{children}</DataContext.Provider>;

@@ -40,7 +40,8 @@
     "react-router-dom": "^6.22.3",
     "rxdb": "^15.18.4",
     "rxjs": "^7.8.1",
-    "timeago.js": "^4.0.2"
+    "timeago.js": "^4.0.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

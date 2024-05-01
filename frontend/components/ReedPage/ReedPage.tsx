@@ -1,23 +1,40 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { v4 as uuid } from 'uuid';
 import clsx from 'clsx';
-import { Reed, ReedHistory, instrumentName } from '../../types';
+import { LogEntry, Reed, ReedHistory, instrumentName } from '../../types';
 import { findColorHex } from '../ColorPicker/utils';
 import { useData } from '../Data/Data';
 import { timestampToLocaleFormattedDate } from '../../utils/date';
 import { useNavigate } from 'react-router-dom';
+import { Modal } from '../Modal/Modal';
+import { Button } from '../Button/Button';
+import { AddCommentModal } from './Modals';
 
 export function ReedRoute() {
   const data = useData();
-  const { id } = useParams();
-  if (id === undefined) {
+  const params = useParams();
+  const id = params.id;
+  if (id === undefined || id === null) {
     return <div></div>;
   }
+
   const reed = data.reeds.reeds[id];
   if (reed === undefined) {
     return <div></div>;
   }
-  return <ReedPage reed={reed} />;
+
+  function addComment(meta: { comment: string }) {
+    data.write({
+      entry_id: uuid(),
+      entry_type: 'comment',
+      data: meta,
+      reed_id: id!,
+      entry_timestamp: Date.now() / 1000,
+    });
+  }
+
+  return <ReedPage reed={reed} addComment={addComment} />;
 }
 
 function Descriptions(entries: Record<string, string>) {
@@ -30,25 +47,6 @@ function Descriptions(entries: Record<string, string>) {
         </Fragment>
       ))}
     </dl>
-  );
-}
-
-function ActionButton({
-  title,
-  variant,
-}: {
-  title: string;
-  variant?: 'primary' | 'warning' | undefined;
-}) {
-  return (
-    <button
-      className={clsx(
-        'reed-page__action-button',
-        variant === 'warning' && 'reed-page__action-button--warning',
-      )}
-    >
-      {title}
-    </button>
   );
 }
 
@@ -109,7 +107,13 @@ function Event(props: ReedHistory) {
   );
 }
 
-export function ReedPage({ reed }: { reed: Reed }) {
+export function ReedPage({
+  reed,
+  addComment,
+}: {
+  reed: Reed;
+  addComment: (data: { comment: string }) => void;
+}) {
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
     '--reed-color': findColorHex(reed.data.threadColor),
@@ -140,6 +144,16 @@ export function ReedPage({ reed }: { reed: Reed }) {
         </svg>
       </button>
     );
+  }
+
+  const [modal, setModal] = useState<string | undefined>(undefined);
+
+  function closeModal() {
+    setModal(undefined);
+  }
+
+  function openCommentsModal() {
+    setModal('addComment');
   }
 
   return (
@@ -181,12 +195,14 @@ export function ReedPage({ reed }: { reed: Reed }) {
           <div className="reed-page__actions">
             <h2 className="reed-page__h2">Actions</h2>
             <div className="reed-page__action-buttons">
-              <ActionButton title="Add a comment" />
-              <ActionButton title="I played on this reed" />
-              <ActionButton title="I scraped the reed" />
-              <ActionButton title="I clipped the reed's tip" />
-              <ActionButton title="Run a diagnostic test" />
-              <ActionButton variant="warning" title="Discard the reed" />
+              <Button variant="primary" onClick={openCommentsModal}>
+                Add a comment
+              </Button>
+              <Button variant="primary">I played on this reed</Button>
+              <Button variant="primary">I scraped the reed</Button>
+              <Button variant="primary">I clipped the reed's tip</Button>
+              <Button variant="primary">Run a diagnostic test</Button>
+              <Button variant="warning">Discard the reed</Button>
             </div>
           </div>
           <div className="reed-page__history">
@@ -197,6 +213,11 @@ export function ReedPage({ reed }: { reed: Reed }) {
           </div>
         </div>
       </div>
+      <AddCommentModal
+        isOpen={modal === 'addComment'}
+        closeModal={closeModal}
+        onSubmit={addComment}
+      />
     </article>
   );
 }

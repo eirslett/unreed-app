@@ -1,0 +1,71 @@
+/*
+.textarea__wrapper {
+  display: grid;
+}
+
+.textarea__placeholder,
+.textarea__input {
+  padding: 9px 16px;
+  color: green;
+  border: 1px solid red;
+  background-color: yellow;
+  border-radius: 8px;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.textarea__placeholder {
+  user-select: none;
+  pointer-events: none;
+  white-space: pre-wrap;
+}
+
+.textarea__input {
+  resize: none;
+  overflow: hidden;
+}
+*/
+
+.textarea__wrapper {
+  /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+  display: grid;
+}
+.textarea__wrapper::after {
+  /* Note the weird space! Needed to preventy jumpy behavior */
+  content: attr(data-replicated-value) ' ';
+
+  /* This is how textarea text behaves */
+  white-space: pre-wrap;
+
+  /* Hidden from view, clicks, and screen readers */
+  visibility: hidden;
+}
+.textarea__wrapper > textarea {
+  /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+  resize: none;
+
+  /* Firefox shows scrollbar on growth, you can hide like this. */
+  overflow: hidden;
+}
+.textarea__wrapper > textarea,
+.textarea__wrapper::after {
+  /* Identical styling required!! */
+  border: 1px solid black;
+  padding: 0.5rem;
+  font: inherit;
+
+  /* Place on top of each other */
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+/*
+body {
+  margin: 2rem;
+  font: 1rem/1.4 system-ui, sans-serif;
+}
+
+label {
+  display: block;
+}
+*/

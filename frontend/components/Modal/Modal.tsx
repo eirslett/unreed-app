@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 export type ModalProps = {
+  isOpen: boolean;
   children?: React.ReactNode;
+  closeModal(): void;
 };
 
 function CloseIcon() {
@@ -20,24 +22,25 @@ function CloseIcon() {
 
 export function Modal(props: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const dialog = ref.current;
-    if (dialog) {
-      dialog.showModal();
-    }
-  }, [ref]);
 
-  function closeModal() {
-    const dialog = ref.current;
-    if (dialog) {
-      dialog.close();
+  useEffect(() => {
+    if (ref.current) {
+      if (props.isOpen) {
+        ref.current.showModal();
+      } else {
+        ref.current.close();
+      }
     }
+  }, [props.isOpen]);
+
+  if (!props.isOpen) {
+    return null;
   }
 
   return (
-    <dialog ref={ref} className="dialog">
+    <dialog ref={ref} className="dialog" onClose={props.closeModal}>
       <div className="dialog__top">
-        <button className="dialog__close-button" onClick={closeModal} aria-label="Close">
+        <button className="dialog__close-button" onClick={props.closeModal} aria-label="Close">
           <CloseIcon />
         </button>
       </div>

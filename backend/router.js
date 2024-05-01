@@ -15,7 +15,7 @@ function getConnection() {
       host: '127.0.0.1',
       user: 'unreed',
       password: 'unreed',
-      database: 'unreed',
+      database: 'unreed_proddump',
     });
   }
 }
