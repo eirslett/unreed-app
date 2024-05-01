@@ -40,5 +40,5 @@ export function Example() {
     discarded: false,
   };
 
-  return <ReedPage reed={reed} />;
+  return <ReedPage reed={reed} addComment={console.log} />;
 }
