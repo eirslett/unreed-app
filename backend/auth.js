@@ -73,7 +73,7 @@ async function localhostCallbackPage(req, res) {
     .setExpirationTime(expirationTime)
     .sign(privateKey);
 
-  res.cookie(AUTH_COOKIE, jwt, { maxAge: maxAge * 1000, httpOnly: true, path: '/', secure: true });
+  res.cookie(AUTH_COOKIE, jwt, { maxAge: maxAge * 1000, httpOnly: true, path: '/', secure: false });
   res.clearCookie(REDIRECT_URI_COOKIE);
   res.redirect(req.cookies.UNREED_REDIRECT_URI ?? '/');
 }
