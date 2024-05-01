@@ -35,7 +35,7 @@
     "google-auth-library": "^9.9.0",
     "jose": "^5.2.4",
     "mysql": "^2.18.1",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "rxdb": "^15.18.4",
@@ -46,7 +46,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@storybook/react-vite": "8.0.8",
-    "@types/react": "^18.2.79",
+    "@types/react": "^18.3.1",
     "@types/react-dom": "^18.2.24",
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.2.1",
