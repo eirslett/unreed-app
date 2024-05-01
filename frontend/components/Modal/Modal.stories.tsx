@@ -5,5 +5,9 @@ export default {
 };
 
 export function ExampleModal() {
-  return <Modal isOpen={true} closeModal={console.log}>This is a test</Modal>;
+  return (
+    <Modal isOpen={true} closeModal={console.log}>
+      This is a test
+    </Modal>
+  );
 }
