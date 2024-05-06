@@ -19,8 +19,6 @@ type DatabaseCollections = {
 type UnreedDatabase = RxDatabase<DatabaseCollections>;
 
 async function boot({ username }: { username: string }): Promise<UnreedDatabase> {
-  console.log('in boot()');
-
   // @ts-expect-error DEV is a boolean which comes from Vite
   const isEnv = import.meta.env.DEV;
   if (isEnv) {
@@ -80,18 +78,25 @@ async function boot({ username }: { username: string }): Promise<UnreedDatabase>
     autoStart: true,
     live: true,
     replicationIdentifier: 'my-http-replication/api/pull',
-    /*
-        push: {
-
-        },
-        */
+    push: {
+      async handler(changeRows) {
+        const rawResponse = await fetch('/api/push', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(changeRows),
+        });
+        const conflictsArray = await rawResponse.json();
+        return conflictsArray;
+      },
+    },
     pull: {
       async handler(
         checkpointOrNull: { id: string; updatedAt: number } | undefined,
         batchSize: number,
       ) {
-        console.log('pulling');
-
         const updatedAt = checkpointOrNull?.updatedAt ?? 0;
         const id = checkpointOrNull?.id ?? '';
         const response = await fetch(
@@ -119,13 +124,10 @@ export function Data({ children }: { children?: ReactNode }) {
 
   const dbRef = useRef<Promise<UnreedDatabase> | undefined>(undefined);
   useEffect(() => {
-    console.log('in effect');
     if (dbRef.current === undefined) {
-      console.log('booting');
       dbRef.current = boot({ username });
 
       dbRef.current.then(async (db: UnreedDatabase) => {
-        console.log('booted');
         const query = db.entries.find().sort({ entry_timestamp: 'asc' });
         db.entries
           .find()
@@ -143,7 +145,6 @@ export function Data({ children }: { children?: ReactNode }) {
   }, [username]);
 
   function write(entry: LogEntry) {
-    console.log('writing entry', entry);
     dbRef.current?.then(async (db: UnreedDatabase) => {
       await db.entries.insert(entry);
     });

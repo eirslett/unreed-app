@@ -8,6 +8,7 @@ export const app = express();
 app.enable('trust proxy');
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cookieParser());
 
 app.get('/health', (req, res) => res.send({ status: 'OK' }));
