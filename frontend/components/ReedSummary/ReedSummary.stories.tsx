@@ -27,7 +27,7 @@ export function Example() {
     },
     history: [],
     lastComment: 'last comment',
-    lastUpdate: 1713716814,
+    lastUpdate: '2024-05-08T22:57:06.000',
     discarded: false,
   };
 

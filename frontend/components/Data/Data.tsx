@@ -1,4 +1,4 @@
-import { createRxDatabase, addRxPlugin, RxDatabase, RxCollection } from 'rxdb';
+import { createRxDatabase, addRxPlugin, RxDatabase, RxCollection, RxDocument } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { replicateRxCollection } from 'rxdb/plugins/replication';
@@ -94,14 +94,20 @@ async function boot({ username }: { username: string }): Promise<UnreedDatabase>
     },
     pull: {
       async handler(
-        checkpointOrNull: { id: string; updatedAt: number } | undefined,
+        checkpointOrNull: { id: string; commitTime: string; entryTimestamp: string } | undefined,
         batchSize: number,
       ) {
-        const updatedAt = checkpointOrNull?.updatedAt ?? 0;
+        const commitTime = checkpointOrNull?.commitTime ?? 0;
         const id = checkpointOrNull?.id ?? '';
-        const response = await fetch(
-          `/api/pull?updatedAt=${updatedAt}&id=${id}&limit=${batchSize}`,
-        );
+        const url = new URL('/api/pull', window.location.href);
+        if (checkpointOrNull !== undefined) {
+          url.searchParams.append('commit_time', commitTime.toString());
+          url.searchParams.append('entry_timestamp', checkpointOrNull.entryTimestamp);
+        }
+        url.searchParams.append('id', id);
+        url.searchParams.append('limit', batchSize.toString());
+
+        const response = await fetch(url);
         const data = await response.json();
 
         return {
@@ -128,11 +134,10 @@ export function Data({ children }: { children?: ReactNode }) {
       dbRef.current = boot({ username });
 
       dbRef.current.then(async (db: UnreedDatabase) => {
-        const query = db.entries.find().sort({ entry_timestamp: 'asc' });
         db.entries
           .find()
           .sort({ entry_timestamp: 'asc' })
-          .$.subscribe((changes: LogEntry[]) => {
+          .$.subscribe((changes: RxDocument<LogEntry>[]) => {
             dispatch({ entry_type: 'clear' });
             changes.forEach(dispatch);
           });

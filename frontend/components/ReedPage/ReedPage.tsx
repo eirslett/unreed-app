@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { parseISO } from 'date-fns';
 import { v4 as uuid } from 'uuid';
 import clsx from 'clsx';
 import { LogEntry, Reed, ReedHistory, instrumentName } from '../../types';
@@ -30,7 +31,7 @@ export function ReedRoute() {
       entry_type: 'comment',
       data: meta,
       reed_id: id!,
-      entry_timestamp: Date.now() / 1000,
+      entry_timestamp: new Date().toISOString(),
     });
   }
 
@@ -101,7 +102,9 @@ function Event(props: ReedHistory) {
 
   return (
     <div className="reed-page__entry">
-      <div className="reed-page__entry-time">{timestampToLocaleFormattedDate(props.time)}</div>
+      <div className="reed-page__entry-time">
+        {timestampToLocaleFormattedDate(parseISO(props.time).getTime())}
+      </div>
       {el}
     </div>
   );

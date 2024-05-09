@@ -24,19 +24,27 @@ export function Example() {
       comments: '',
     },
     history: [
-      { time: 1713572479, action: 'comment', comments: 'index 1080p panel' },
-      { time: 1713572479, action: 'scrape', comments: 'synthesize mobile bandwidth' },
+      { time: '2024-05-08T22:53:11.000', action: 'comment', comments: 'index 1080p panel' },
       {
-        time: 1713493808,
+        time: '2024-05-08T22:53:11.000',
+        action: 'scrape',
+        comments: 'synthesize mobile bandwidth',
+      },
+      {
+        time: '2024-05-08T22:53:11.000',
         action: 'play',
         duration: '75 min',
         comment: 'synthesize auxiliary sensor',
       },
-      { time: 1713421858, action: 'clip', length: '73 mm' },
-      { time: 1713396267, action: 'create', comments: 'input solid state protocol' },
+      { time: '2024-05-08T22:53:11.000', action: 'clip', length: '73 mm' },
+      {
+        time: '2024-05-08T22:53:11.000',
+        action: 'create',
+        comments: 'input solid state protocol',
+      },
     ],
     lastComment: 'last comment',
-    lastUpdate: 1713716814,
+    lastUpdate: '2024-05-08T22:53:11.000',
     discarded: false,
   };
 

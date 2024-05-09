@@ -3,7 +3,7 @@ export type ReedsState = { [reedId: string]: Reed };
 interface LogEntryBase {
   entry_id: string;
   entry_type: string;
-  entry_timestamp: number;
+  entry_timestamp: string;
   reed_id: string;
 }
 
@@ -86,7 +86,7 @@ export type RecentReedsState = Array<string>;
 export type DiscardedReedsState = Array<string>;
 
 interface ReedHistoryBase {
-  time: number;
+  time: string;
   action: string;
 }
 interface CreateHistoryEntry extends ReedHistoryBase {
@@ -122,7 +122,7 @@ export type ReedHistory =
   | DiscardHistoryEntry;
 
 export type Reed = {
-  lastUpdate: number;
+  lastUpdate: string;
   lastComment: string;
   discarded: boolean;
   data: ReedData;

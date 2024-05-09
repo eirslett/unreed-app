@@ -6,7 +6,8 @@ let lastUpdate = Date.now();
 function makeTime() {
   const diff = Math.random() * 1000 * 60 * 60 * 24;
   lastUpdate -= diff;
-  return Math.floor(lastUpdate / 1000);
+  // to ISO string but remove Z at the end
+  return new Date(lastUpdate).toISOString().slice(0, -1);
 }
 
 const email = 'test.user@example.com';

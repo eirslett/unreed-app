@@ -1,4 +1,5 @@
 import * as timeago from 'timeago.js';
+import { parseISO } from 'date-fns';
 import { Reed, ReedData, instrumentName } from '../../types';
 import { findColorHex } from '../ColorPicker/utils';
 import { timestampToLocaleFormattedDate } from '../../utils/date';
@@ -11,10 +12,11 @@ function keyValue(key: string, value: string) {
 }
 
 export function ReedSummary({ id, data, lastComment, lastUpdate }: Reed & { id: string }) {
-  const moreThanOneWeekOld = Date.now() - lastUpdate * 1000 > 1000 * 60 * 60 * 24 * 7;
+  const lastUpdateTimestamp: number = parseISO(lastUpdate).getTime();
+  const moreThanOneWeekOld = Date.now() - lastUpdateTimestamp > 1000 * 60 * 60 * 24 * 7;
   const lastUpdatedText = moreThanOneWeekOld
-    ? timestampToLocaleFormattedDate(lastUpdate)
-    : timeago.format(lastUpdate * 1000);
+    ? timestampToLocaleFormattedDate(lastUpdateTimestamp)
+    : timeago.format(lastUpdateTimestamp);
 
   const information = [];
   if (data.caneProducer) {
