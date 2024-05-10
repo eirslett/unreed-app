@@ -65,7 +65,7 @@
 }
 .reed-summary__meta {
   grid-area: meta;
-  margin: 4px;
+  margin: 4px 8px;
   font-size: var(--font-size-small);
   color: var(--color-light);
 }
