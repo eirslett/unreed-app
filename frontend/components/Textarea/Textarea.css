@@ -1,32 +1,3 @@
-/*
-.textarea__wrapper {
-  display: grid;
-}
-
-.textarea__placeholder,
-.textarea__input {
-  padding: 9px 16px;
-  color: green;
-  border: 1px solid red;
-  background-color: yellow;
-  border-radius: 8px;
-  box-sizing: border-box;
-  overflow-wrap: anywhere;
-  grid-area: 1 / 1 / 2 / 2;
-}
-
-.textarea__placeholder {
-  user-select: none;
-  pointer-events: none;
-  white-space: pre-wrap;
-}
-
-.textarea__input {
-  resize: none;
-  overflow: hidden;
-}
-*/
-
 .textarea__wrapper {
   /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
   display: grid;
@@ -51,21 +22,11 @@
 .textarea__wrapper > textarea,
 .textarea__wrapper::after {
   /* Identical styling required!! */
-  border: 1px solid black;
-  padding: 0.5rem;
+  padding: 4px;
   font: inherit;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
 
   /* Place on top of each other */
   grid-area: 1 / 1 / 2 / 2;
 }
-
-/*
-body {
-  margin: 2rem;
-  font: 1rem/1.4 system-ui, sans-serif;
-}
-
-label {
-  display: block;
-}
-*/

@@ -33,10 +33,6 @@ export function Modal(props: ModalProps) {
     }
   }, [props.isOpen]);
 
-  if (!props.isOpen) {
-    return null;
-  }
-
   return (
     <dialog ref={ref} className="dialog" onClose={props.closeModal}>
       <div className="dialog__top">
@@ -47,4 +43,8 @@ export function Modal(props: ModalProps) {
       <div>{props.children}</div>
     </dialog>
   );
+}
+
+export function ModalBottom({ children }: { children?: React.ReactNode }) {
+  return <div className="dialog__bottom">{children}</div>;
 }

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Modal } from '../Modal/Modal';
+import { useId, useState } from 'react';
+import { Modal, ModalBottom } from '../Modal/Modal';
 import { Textarea } from '../Textarea/Textarea';
 import { Button } from '../Button/Button';
 import { LogEntry } from '../../types';
@@ -14,9 +14,11 @@ export function AddCommentModal({
   onSubmit(entry: { comment: string }): void;
 }) {
   const [comment, setComment] = useState('');
+  const id = useId();
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
       <form
+        id={id}
         onSubmit={(ev) => {
           ev.preventDefault();
           onSubmit({ comment });
@@ -25,8 +27,12 @@ export function AddCommentModal({
         }}
       >
         <Textarea autoFocus value={comment} onChange={(ev) => setComment(ev.target.value)} />
-        <Button variant="primary">Save</Button>
       </form>
+      <ModalBottom>
+        <Button variant="primary" form={id}>
+          Save
+        </Button>
+      </ModalBottom>
     </Modal>
   );
 }

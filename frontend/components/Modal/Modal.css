@@ -12,6 +12,7 @@
 .dialog__top {
   display: flex;
   justify-content: end;
+  margin-bottom: 8px;
 }
 
 .dialog__close-button {
@@ -37,4 +38,8 @@
 
 .dialog__close-button svg {
   flex-shrink: 0;
+}
+
+.dialog__bottom {
+  margin-top: 8px;
 }
