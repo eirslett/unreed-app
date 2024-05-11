@@ -10,7 +10,13 @@ import { timestampToLocaleFormattedDate } from '../../utils/date';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from '../Modal/Modal';
 import { Button } from '../Button/Button';
-import { AddCommentModal, ClippedTipModal, PlayedReedModal, ScrapedReedModal } from './Modals';
+import {
+  AddCommentModal,
+  ClippedTipModal,
+  DiscardModal,
+  PlayedReedModal,
+  ScrapedReedModal,
+} from './Modals';
 
 export function ReedRoute() {
   const data = useData();
@@ -65,6 +71,16 @@ export function ReedRoute() {
     });
   }
 
+  function discard() {
+    data.write({
+      entry_id: uuid(),
+      entry_type: 'discard',
+      data: {},
+      reed_id: id!,
+      entry_timestamp: new Date().toISOString(),
+    });
+  }
+
   return (
     <ReedPage
       reed={reed}
@@ -72,6 +88,7 @@ export function ReedRoute() {
       playedReed={playedReed}
       scrapedReed={scrapedReed}
       clippedTip={clippedTip}
+      discard={discard}
     />
   );
 }
@@ -154,12 +171,14 @@ export function ReedPage({
   playedReed,
   scrapedReed,
   clippedTip,
+  discard,
 }: {
   reed: Reed;
   addComment: (data: { comment: string }) => void;
   playedReed: (data: { duration: string; comment: string }) => void;
   scrapedReed: (data: { comment: string }) => void;
   clippedTip: (data: { length: string }) => void;
+  discard: () => void;
 }) {
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
@@ -258,8 +277,10 @@ export function ReedPage({
               <Button variant="primary" onClick={() => setModal('clippedTip')}>
                 I clipped the reed's tip
               </Button>
-              <Button variant="primary">Run a diagnostic test</Button>
-              <Button variant="warning">Discard the reed</Button>
+              {/*<Button variant="primary">Run a diagnostic test</Button>*/}
+              <Button variant="warning" onClick={() => setModal('discard')}>
+                Discard the reed
+              </Button>
             </div>
           </div>
           <div className="reed-page__history">
@@ -290,6 +311,7 @@ export function ReedPage({
         closeModal={closeModal}
         onSubmit={clippedTip}
       />
+      <DiscardModal isOpen={modal === 'discard'} closeModal={closeModal} onSubmit={discard} />
     </article>
   );
 }

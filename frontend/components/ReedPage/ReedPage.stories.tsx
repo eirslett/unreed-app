@@ -48,5 +48,14 @@ export function Example() {
     discarded: false,
   };
 
-  return <ReedPage reed={reed} addComment={console.log} />;
+  return (
+    <ReedPage
+      reed={reed}
+      addComment={console.log}
+      playedReed={console.log}
+      scrapedReed={console.log}
+      clippedTip={console.log}
+      discard={console.log}
+    />
+  );
 }

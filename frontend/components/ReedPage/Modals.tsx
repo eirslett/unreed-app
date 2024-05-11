@@ -203,3 +203,39 @@ export function ClippedTipModal({
     </Modal>
   );
 }
+
+export function DiscardModal({
+  isOpen,
+  closeModal,
+  onSubmit,
+}: {
+  isOpen: boolean;
+  closeModal(): void;
+  onSubmit(): void;
+}) {
+  const id = useId();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  return (
+    <Modal isOpen={isOpen} closeModal={closeModal}>
+      <form
+        id={id}
+        ref={formRef}
+        method="dialog"
+        onSubmit={() => {
+          onSubmit();
+        }}
+      >
+        <p>Are you sure you want to discard this reed?</p>
+      </form>
+      <ModalBottom>
+        <Button variant="warning" form={id}>
+          Discard
+        </Button>
+        <Button variant="secondary" type="button" onClick={closeModal}>
+          Cancel
+        </Button>
+      </ModalBottom>
+    </Modal>
+  );
+}
