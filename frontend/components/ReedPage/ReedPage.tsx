@@ -10,7 +10,7 @@ import { timestampToLocaleFormattedDate } from '../../utils/date';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from '../Modal/Modal';
 import { Button } from '../Button/Button';
-import { AddCommentModal } from './Modals';
+import { AddCommentModal, PlayedReedModal } from './Modals';
 
 export function ReedRoute() {
   const data = useData();
@@ -35,7 +35,17 @@ export function ReedRoute() {
     });
   }
 
-  return <ReedPage reed={reed} addComment={addComment} />;
+  function playedReed(meta: { duration: string; comment: string }) {
+    data.write({
+      entry_id: uuid(),
+      entry_type: 'play',
+      data: meta,
+      reed_id: id!,
+      entry_timestamp: new Date().toISOString(),
+    });
+  }
+
+  return <ReedPage reed={reed} addComment={addComment} playedReed={playedReed} />;
 }
 
 function Descriptions(entries: Record<string, string>) {
@@ -113,9 +123,11 @@ function Event(props: ReedHistory) {
 export function ReedPage({
   reed,
   addComment,
+  playedReed,
 }: {
   reed: Reed;
   addComment: (data: { comment: string }) => void;
+  playedReed: (data: { duration: string; comment: string }) => void;
 }) {
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
@@ -157,6 +169,10 @@ export function ReedPage({
 
   function openCommentsModal() {
     setModal('addComment');
+  }
+
+  function openPlayedReedModal() {
+    setModal('playedReed');
   }
 
   return (
@@ -201,7 +217,9 @@ export function ReedPage({
               <Button variant="primary" onClick={openCommentsModal}>
                 Add a comment
               </Button>
-              <Button variant="primary">I played on this reed</Button>
+              <Button variant="primary" onClick={openPlayedReedModal}>
+                I played on this reed
+              </Button>
               <Button variant="primary">I scraped the reed</Button>
               <Button variant="primary">I clipped the reed's tip</Button>
               <Button variant="primary">Run a diagnostic test</Button>
@@ -220,6 +238,11 @@ export function ReedPage({
         isOpen={modal === 'addComment'}
         closeModal={closeModal}
         onSubmit={addComment}
+      />
+      <PlayedReedModal
+        isOpen={modal === 'playedReed'}
+        closeModal={closeModal}
+        onSubmit={playedReed}
       />
     </article>
   );
