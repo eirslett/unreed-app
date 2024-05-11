@@ -17,6 +17,7 @@ export function reedReducer(state: ReedState, action: LogEntry | ClearAction): R
     return {
       ...state,
       recentReeds: recentReedsReducer(state.recentReeds, action),
+      discardedReeds: discardedReedsReducer(state.discardedReeds, action),
       reeds: reedsReducer(state.reeds, action),
     };
   }

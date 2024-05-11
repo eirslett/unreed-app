@@ -2,7 +2,7 @@ import { StrictMode, ReactNode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Auth } from '../Auth/Auth';
 import { Layout, LayoutTopbar, LayoutContent } from '../Layout/Layout';
-import { ReedOverview } from '../ReedOverview/ReedOverview';
+import { DiscardedReeds, ReedOverview } from '../ReedOverview/ReedOverview';
 import { Topbar } from '../Topbar/Topbar';
 import { Data } from '../Data/Data';
 import { ReedRoute } from '../ReedPage/ReedPage';
@@ -41,7 +41,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/discarded',
-    element: <Shell>Discarded</Shell>,
+    element: (
+      <Shell>
+        <DiscardedReeds />
+      </Shell>
+    ),
   },
 ]);
 

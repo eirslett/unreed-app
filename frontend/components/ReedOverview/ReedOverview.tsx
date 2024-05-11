@@ -5,7 +5,6 @@ import { ReedSummary } from '../ReedSummary/ReedSummary';
 import { Topbar } from '../Topbar/Topbar';
 
 export function ReedOverview() {
-  const username = useUsername();
   const data = useData();
   return (
     <Layout>
@@ -15,6 +14,24 @@ export function ReedOverview() {
       <LayoutContent>
         <div className="reed-overview__grid">
           {data.reeds.recentReeds.map((id) => (
+            <ReedSummary key={id} id={id} {...data.reeds.reeds[id]} />
+          ))}
+        </div>
+      </LayoutContent>
+    </Layout>
+  );
+}
+
+export function DiscardedReeds() {
+  const data = useData();
+  return (
+    <Layout>
+      <LayoutTopbar>
+        <Topbar />
+      </LayoutTopbar>
+      <LayoutContent>
+        <div className="reed-overview__grid">
+          {data.reeds.discardedReeds.map((id) => (
             <ReedSummary key={id} id={id} {...data.reeds.reeds[id]} />
           ))}
         </div>
