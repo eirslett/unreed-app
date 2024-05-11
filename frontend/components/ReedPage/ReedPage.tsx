@@ -10,7 +10,7 @@ import { timestampToLocaleFormattedDate } from '../../utils/date';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from '../Modal/Modal';
 import { Button } from '../Button/Button';
-import { AddCommentModal, PlayedReedModal } from './Modals';
+import { AddCommentModal, PlayedReedModal, ScrapedReedModal } from './Modals';
 
 export function ReedRoute() {
   const data = useData();
@@ -45,7 +45,24 @@ export function ReedRoute() {
     });
   }
 
-  return <ReedPage reed={reed} addComment={addComment} playedReed={playedReed} />;
+  function scrapedReed(meta: { comment: string }) {
+    data.write({
+      entry_id: uuid(),
+      entry_type: 'scrape',
+      data: meta,
+      reed_id: id!,
+      entry_timestamp: new Date().toISOString(),
+    });
+  }
+
+  return (
+    <ReedPage
+      reed={reed}
+      addComment={addComment}
+      playedReed={playedReed}
+      scrapedReed={scrapedReed}
+    />
+  );
 }
 
 function Descriptions(entries: Record<string, string>) {
@@ -124,10 +141,12 @@ export function ReedPage({
   reed,
   addComment,
   playedReed,
+  scrapedReed,
 }: {
   reed: Reed;
   addComment: (data: { comment: string }) => void;
   playedReed: (data: { duration: string; comment: string }) => void;
+  scrapedReed: (data: { comment: string }) => void;
 }) {
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
@@ -220,7 +239,9 @@ export function ReedPage({
               <Button variant="primary" onClick={openPlayedReedModal}>
                 I played on this reed
               </Button>
-              <Button variant="primary">I scraped the reed</Button>
+              <Button variant="primary" onClick={() => setModal('scrapedReed')}>
+                I scraped the reed
+              </Button>
               <Button variant="primary">I clipped the reed's tip</Button>
               <Button variant="primary">Run a diagnostic test</Button>
               <Button variant="warning">Discard the reed</Button>
@@ -243,6 +264,11 @@ export function ReedPage({
         isOpen={modal === 'playedReed'}
         closeModal={closeModal}
         onSubmit={playedReed}
+      />
+      <ScrapedReedModal
+        isOpen={modal === 'scrapedReed'}
+        closeModal={closeModal}
+        onSubmit={scrapedReed}
       />
     </article>
   );

@@ -112,3 +112,50 @@ export function PlayedReedModal({
     </Modal>
   );
 }
+
+const scrapedReedPlaceholder =
+  'Did you scrape by hand? With a profiling machine? Which machine? Which template? Which settings?';
+
+export function ScrapedReedModal({
+  isOpen,
+  closeModal,
+  onSubmit,
+}: {
+  isOpen: boolean;
+  closeModal(): void;
+  onSubmit(entry: { comment: string }): void;
+}) {
+  const id = useId();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      closeModal={() => {
+        formRef.current?.reset();
+        closeModal();
+      }}
+    >
+      <form
+        id={id}
+        ref={formRef}
+        method="dialog"
+        onSubmit={(ev) => {
+          if (formRef.current != null) {
+            const data = new FormData(formRef.current);
+            const comment: string = String(data.get('comment'));
+            formRef.current.reset();
+            onSubmit({ comment });
+          }
+        }}
+      >
+        <Textarea name="comment" autoFocus placeholder={scrapedReedPlaceholder} />
+      </form>
+      <ModalBottom>
+        <Button variant="primary" form={id}>
+          Save
+        </Button>
+      </ModalBottom>
+    </Modal>
+  );
+}
