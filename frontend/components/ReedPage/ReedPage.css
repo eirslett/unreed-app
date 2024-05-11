@@ -131,3 +131,10 @@
 .reed-page__event__primary-text {
   color: var(--color-marijuana);
 }
+
+.reed-page__discard-event {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-royal);
+}
