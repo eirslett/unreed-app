@@ -10,7 +10,7 @@ import { timestampToLocaleFormattedDate } from '../../utils/date';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from '../Modal/Modal';
 import { Button } from '../Button/Button';
-import { AddCommentModal, PlayedReedModal, ScrapedReedModal } from './Modals';
+import { AddCommentModal, ClippedTipModal, PlayedReedModal, ScrapedReedModal } from './Modals';
 
 export function ReedRoute() {
   const data = useData();
@@ -55,12 +55,23 @@ export function ReedRoute() {
     });
   }
 
+  function clippedTip(meta: { length: string }) {
+    data.write({
+      entry_id: uuid(),
+      entry_type: 'clip',
+      data: meta,
+      reed_id: id!,
+      entry_timestamp: new Date().toISOString(),
+    });
+  }
+
   return (
     <ReedPage
       reed={reed}
       addComment={addComment}
       playedReed={playedReed}
       scrapedReed={scrapedReed}
+      clippedTip={clippedTip}
     />
   );
 }
@@ -142,11 +153,13 @@ export function ReedPage({
   addComment,
   playedReed,
   scrapedReed,
+  clippedTip,
 }: {
   reed: Reed;
   addComment: (data: { comment: string }) => void;
   playedReed: (data: { duration: string; comment: string }) => void;
   scrapedReed: (data: { comment: string }) => void;
+  clippedTip: (data: { length: string }) => void;
 }) {
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
@@ -242,7 +255,9 @@ export function ReedPage({
               <Button variant="primary" onClick={() => setModal('scrapedReed')}>
                 I scraped the reed
               </Button>
-              <Button variant="primary">I clipped the reed's tip</Button>
+              <Button variant="primary" onClick={() => setModal('clippedTip')}>
+                I clipped the reed's tip
+              </Button>
               <Button variant="primary">Run a diagnostic test</Button>
               <Button variant="warning">Discard the reed</Button>
             </div>
@@ -269,6 +284,11 @@ export function ReedPage({
         isOpen={modal === 'scrapedReed'}
         closeModal={closeModal}
         onSubmit={scrapedReed}
+      />
+      <ClippedTipModal
+        isOpen={modal === 'clippedTip'}
+        closeModal={closeModal}
+        onSubmit={clippedTip}
       />
     </article>
   );

@@ -3,7 +3,7 @@ import { Modal, ModalBottom } from '../Modal/Modal';
 import { Textarea } from '../Textarea/Textarea';
 import { Button } from '../Button/Button';
 import { LogEntry } from '../../types';
-import { Field } from '../Form/Form';
+import { Field, Input } from '../Form/Form';
 
 export function AddCommentModal({
   isOpen,
@@ -86,9 +86,8 @@ export function PlayedReedModal({
       >
         <Field>
           <label htmlFor="duration">For how long (approximately)?</label>
-          <input
+          <Input
             autoFocus
-            className="input"
             type="text"
             name="duration"
             placeholder="10 min, 30 min..."
@@ -99,9 +98,7 @@ export function PlayedReedModal({
           <label className="label" htmlFor="comment">
             How was the reed?
           </label>
-          <div className="control">
-            <Textarea name="comment" defaultValue="" />
-          </div>
+          <Textarea name="comment" defaultValue="" />
         </Field>
       </form>
       <ModalBottom>
@@ -150,6 +147,53 @@ export function ScrapedReedModal({
         }}
       >
         <Textarea name="comment" autoFocus placeholder={scrapedReedPlaceholder} />
+      </form>
+      <ModalBottom>
+        <Button variant="primary" form={id}>
+          Save
+        </Button>
+      </ModalBottom>
+    </Modal>
+  );
+}
+
+export function ClippedTipModal({
+  isOpen,
+  closeModal,
+  onSubmit,
+}: {
+  isOpen: boolean;
+  closeModal(): void;
+  onSubmit(entry: { length: string }): void;
+}) {
+  const id = useId();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      closeModal={() => {
+        formRef.current?.reset();
+        closeModal();
+      }}
+    >
+      <form
+        id={id}
+        ref={formRef}
+        method="dialog"
+        onSubmit={() => {
+          if (formRef.current != null) {
+            const data = new FormData(formRef.current);
+            const length = String(data.get('length'));
+            formRef.current.reset();
+            onSubmit({ length });
+          }
+        }}
+      >
+        <Field>
+          <label htmlFor="length">New length</label>
+          <Input autoFocus type="text" name="length" placeholder="71 mm, 72 mm..." />
+        </Field>
       </form>
       <ModalBottom>
         <Button variant="primary" form={id}>
