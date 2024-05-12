@@ -23,6 +23,7 @@
     'comments comments';
 
   overflow-wrap: anywhere;
+  align-content: start;
 
   outline: 0;
 

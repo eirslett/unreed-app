@@ -17,6 +17,13 @@
 .topbar__link {
   text-decoration: none;
   color: white;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-weight: 300;
+}
+
+.topbar__link:hover {
+  background-color: var(--color-marine);
 }
 
 .topbar__button {

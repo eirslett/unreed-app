@@ -282,25 +282,29 @@ export function ReedPage({
         </div>
         <div>
           <div className="reed-page__actions">
-            <h2 className="reed-page__h2">Actions</h2>
-            <div className="reed-page__action-buttons">
-              <Button variant="primary" onClick={openCommentsModal}>
-                Add a comment
-              </Button>
-              <Button variant="primary" onClick={openPlayedReedModal}>
-                I played on this reed
-              </Button>
-              <Button variant="primary" onClick={() => setModal('scrapedReed')}>
-                I scraped the reed
-              </Button>
-              <Button variant="primary" onClick={() => setModal('clippedTip')}>
-                I clipped the reed's tip
-              </Button>
-              {/*<Button variant="primary">Run a diagnostic test</Button>*/}
-              <Button variant="warning" onClick={() => setModal('discard')}>
-                Discard the reed
-              </Button>
-            </div>
+            {!reed.discarded && (
+              <>
+                <h2 className="reed-page__h2">Actions</h2>
+                <div className="reed-page__action-buttons">
+                  <Button variant="primary" onClick={openCommentsModal}>
+                    Add a comment
+                  </Button>
+                  <Button variant="primary" onClick={openPlayedReedModal}>
+                    I played on this reed
+                  </Button>
+                  <Button variant="primary" onClick={() => setModal('scrapedReed')}>
+                    I scraped the reed
+                  </Button>
+                  <Button variant="primary" onClick={() => setModal('clippedTip')}>
+                    I clipped the reed's tip
+                  </Button>
+                  {/*<Button variant="primary">Run a diagnostic test</Button>*/}
+                  <Button variant="warning" onClick={() => setModal('discard')}>
+                    Discard the reed
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
           <div className="reed-page__history">
             <h2 className="reed-page__h2">History</h2>
