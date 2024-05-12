@@ -6,7 +6,8 @@
 
   border-radius: 4px;
   background-color: var(--color-base);
-  border: 1px solid var(--color-sand);
+  /* border: 1px solid var(--color-sand); */
+  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;

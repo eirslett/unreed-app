@@ -3,7 +3,7 @@
   background-color: var(--color-ocean);
   display: flex;
   align-items: center;
-  padding: 4px;
+  padding: 4px 16px;
   gap: 8px;
   box-sizing: border-box;
   font-size: var(--font-size-large);
