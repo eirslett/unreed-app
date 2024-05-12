@@ -16,14 +16,27 @@ export function Textarea({
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
+
+  const [internalValue, setInternalValue] = useState(value ?? defaultValue ?? '');
+
   useEffect(() => {
-    if (autoFocus && ref.current) {
-      ref.current.setAttribute('autofocus', 'true');
+    if (ref.current) {
+      if (autoFocus) {
+        ref.current.setAttribute('autofocus', 'true');
+      }
+      ref.current.value = value ?? defaultValue ?? '';
+
+      function resetListener() {
+        setInternalValue(value ?? defaultValue ?? '');
+      }
+      ref.current.form?.addEventListener('reset', resetListener);
+      return () => {
+        ref.current?.form?.removeEventListener('reset', resetListener);
+      };
     }
   }, []);
 
-  const replicatedValue = value ?? defaultValue ?? '';
-  const replicatedValueOrPlaceholder = replicatedValue === '' ? placeholder : replicatedValue;
+  const replicatedValueOrPlaceholder = internalValue === '' ? placeholder : internalValue;
 
   return (
     <div className="textarea__wrapper" data-replicated-value={replicatedValueOrPlaceholder}>
@@ -34,7 +47,10 @@ export function Textarea({
         defaultValue={defaultValue}
         placeholder={placeholder}
         value={value}
-        onChange={onChange}
+        onChange={(ev) => {
+          setInternalValue(ev.target.value);
+          onChange?.(ev);
+        }}
       />
     </div>
   );
