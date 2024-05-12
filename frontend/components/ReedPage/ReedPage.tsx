@@ -17,6 +17,7 @@ import {
   PlayedReedModal,
   ScrapedReedModal,
 } from './Modals';
+import { clampedBackgroundColor, clampedBorderColor } from '../../utils/color';
 
 export function ReedRoute() {
   const data = useData();
@@ -199,9 +200,12 @@ export function ReedPage({
   clippedTip: (data: { length: string }) => void;
   discard: () => void;
 }) {
+  const colorHex = findColorHex(reed.data.threadColor) ?? '#000000';
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
-    '--reed-color': findColorHex(reed.data.threadColor),
+    '--reed-color': colorHex,
+    '--clamped-border-color': clampedBorderColor(colorHex),
+    '--clamped-background-color': clampedBackgroundColor(colorHex),
     viewTransitionName: 'reed-card', // 'reed-card-' + reed.data.reedIdentification,
   };
 

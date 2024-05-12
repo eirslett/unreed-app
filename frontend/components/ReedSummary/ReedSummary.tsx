@@ -5,6 +5,7 @@ import { findColorHex } from '../ColorPicker/utils';
 import { timestampToLocaleFormattedDate } from '../../utils/date';
 import { Link, unstable_useViewTransitionState } from 'react-router-dom';
 import { useState } from 'react';
+import { clampedBackgroundColor, clampedBorderColor } from '../../utils/color';
 
 function keyValue(key: string, value: string) {
   // key: value but with non-breaking space
@@ -62,9 +63,14 @@ export function ReedSummary({ id, data, lastComment, lastUpdate }: Reed & { id: 
 
   const isTransitioning = unstable_useViewTransitionState(to);
 
+  const colorHex = findColorHex(data.threadColor) ?? '#000000';
   // @ts-expect-error - TS doesn't know about CSS custom properties
   const style: CSSProperties = {
-    '--reed-color': findColorHex(data.threadColor),
+    '--reed-color': colorHex,
+
+    '--clamped-border-color': clampedBorderColor(colorHex),
+    '--clamped-background-color': clampedBackgroundColor(colorHex),
+
     viewTransitionName: isTransitioning ? 'reed-card' : undefined, // reed-card-' + id,
   };
 

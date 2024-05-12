@@ -4,12 +4,14 @@
   --border-radius: 8px;
   --border-width: 2px;
 
+  /*
+  Alas, this is not supported by all browsers yet. So it's implemented in JS for now.
   --clamped-border-color: solid hsl(from var(--reed-color, black) h s clamp(0, l, 0.7));
   --clamped-background-color: hsl(from var(--reed-color, black) h s clamp(0.95, l, 1));
+  */
 
   position: relative;
   border-radius: var(--border-radius);
-  /* border: var(--border-width) solid transparent; */
   padding: var(--padding-size) var(--padding-size) var(--padding-size)
     calc(var(--swatch-width) + var(--padding-size));
 
@@ -39,7 +41,7 @@
   content: '';
   inset: 0;
   border-radius: var(--border-radius);
-  border: var(--border-width) var(--clamped-border-color);
+  border: var(--border-width) solid var(--clamped-border-color);
 }
 
 .reed-summary:hover::after {
