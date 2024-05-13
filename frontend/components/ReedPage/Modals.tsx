@@ -85,20 +85,21 @@ export function PlayedReedModal({
         }}
       >
         <Field>
-          <label htmlFor="duration">For how long (approximately)?</label>
+          <label htmlFor="playedReed.duration">For how long (approximately)?</label>
           <Input
             autoFocus
             type="text"
+            id="playedReed.duration"
             name="duration"
             placeholder="10 min, 30 min..."
             defaultValue=""
           />
         </Field>
         <Field>
-          <label className="label" htmlFor="comment">
+          <label className="label" htmlFor="playedReed.comment">
             How was the reed?
           </label>
-          <Textarea name="comment" defaultValue="" />
+          <Textarea id="playedReed.comment" name="comment" defaultValue="" />
         </Field>
       </form>
       <ModalBottom>

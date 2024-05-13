@@ -34,7 +34,7 @@ function ColorPickerOpener({
 }) {
   if (value === undefined) {
     return (
-      <button className="color-picker__opener" onClick={onClick}>
+      <button type="button" className="color-picker__opener" onClick={onClick}>
         Select a color
       </button>
     );
@@ -45,6 +45,7 @@ function ColorPickerOpener({
 
     return (
       <button
+        type="button"
         className="color-picker__opener"
         style={{ backgroundColor, color: textColor }}
         onClick={onClick}
@@ -132,6 +133,7 @@ function ColorBlock({
   const textColor = getBestContrastColor(backgroundColor);
   return (
     <button
+      type="button"
       className="color-picker__block"
       style={{
         backgroundColor,

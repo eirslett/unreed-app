@@ -6,6 +6,7 @@ import { DiscardedReeds, ReedOverview } from '../ReedOverview/ReedOverview';
 import { Topbar } from '../Topbar/Topbar';
 import { Data } from '../Data/Data';
 import { ReedRoute } from '../ReedPage/ReedPage';
+import { NewReedRoute } from '../NewReed/NewReed';
 
 function Shell({ children }: { children?: ReactNode }) {
   return (
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/new-reed',
-    element: <Shell>New reed</Shell>,
+    element: (
+      <Shell>
+        <NewReedRoute />
+      </Shell>
+    ),
   },
   {
     path: '/discarded',

@@ -5,6 +5,7 @@
 @import 'components/Textarea/Textarea.css';
 @import 'components/Form/Form.css';
 @import 'components/Layout/Layout.css';
+@import 'components/ReedOverview/ReedOverview.css';
 @import 'components/ReedSummary/ReedSummary.css';
 @import 'components/Topbar/Topbar.css';
 @import 'components/ReedPage/ReedPage.css';
@@ -25,10 +26,12 @@
   --font-size-small: 12px;
   --font-size-medium: 16px;
   --font-size-large: 20px;
+  --font-size-molto: 30px;
 
   --color-base: #3a3a3a;
   --color-dark: #10101f;
   --color-light: #7a7a7a;
+  --color-kinda-bright: #b3b3b3;
   --color-almost-white: #f6f6f6;
 }
 
@@ -46,4 +49,17 @@ body {
   background: var(--color-almost-white);
   background: var(--color-sand);
   color: var(--color-base);
+}
+
+h1 {
+  font-size: var(--font-size-molto);
+  font-weight: bold;
+  color: var(--color-dark);
+  margin: 0 0 16px 0;
+}
+h2 {
+  font-size: var(--font-size-large);
+  font-weight: 300;
+  color: var(--color-base);
+  margin: 0 0 8px 0;
 }

@@ -14,7 +14,6 @@
   border-radius: var(--border-radius);
   padding: calc(2 * var(--padding-size)) var(--padding-size) var(--padding-size)
     calc(var(--swatch-width) + var(--padding-size));
-  margin: 16px 0;
 
   background: var(--clamped-background-color);
   /* background: var(--color-almost-white); */

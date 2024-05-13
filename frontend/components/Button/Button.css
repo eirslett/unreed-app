@@ -34,3 +34,8 @@
   --color-base: #ff4444;
   --color-hover: #f00000;
 }
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}

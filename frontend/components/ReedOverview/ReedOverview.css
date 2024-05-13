@@ -1,0 +1,7 @@
+.reed-overview__grid {
+  /* grid layout: min-width of 400px. Gap 16px. */
+  /* maximum two tiles wide per row. */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}

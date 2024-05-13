@@ -20,3 +20,7 @@ export function Button({ children, type, variant, onClick, form }: ButtonProps) 
     </button>
   );
 }
+
+export function Buttons({ children }: { children: React.ReactNode }) {
+  return <div className="buttons">{children}</div>;
+}

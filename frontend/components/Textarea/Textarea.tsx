@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 export function Textarea({
+  id,
   name,
   autoFocus,
   value,
@@ -8,6 +9,7 @@ export function Textarea({
   placeholder,
   onChange,
 }: {
+  id?: string;
   name?: string;
   autoFocus?: boolean;
   value?: string;
@@ -42,6 +44,7 @@ export function Textarea({
     <div className="textarea__wrapper" data-replicated-value={replicatedValueOrPlaceholder}>
       <textarea
         ref={ref}
+        id={id}
         name={name}
         className="textarea__input"
         defaultValue={defaultValue}
