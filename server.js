@@ -1,4 +1,5 @@
 import process from 'process';
+import 'dotenv/config';
 import { isDevelopment } from './backend/utils.js';
 import { app } from './backend/app.js';
 

@@ -3,18 +3,19 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Router } from 'express';
 import * as jose from 'jose';
-import { OAuth2Client } from 'google-auth-library';
+import { Issuer, generators } from 'openid-client';
+
 import { isDevelopment } from './utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CLIENT_ID = '273075937491-eb8o66k7dja2v1og8saorqhqnnc765ct.apps.googleusercontent.com';
+const AUTH0_CLIENT_ID = 'gq575MGFWuiYcXpPTXNoJNYfAuoq19KD';
 
 let jwks;
 
 const secretsFile = '/secrets/unreed-production';
-if (isDevelopment() && fs.existsSync(secretsFile)) {
+if (fs.existsSync(secretsFile)) {
   console.log(`Loading secrets from ${secretsFile}`);
   const input = fs.readFileSync(secretsFile, 'utf-8');
   const data = JSON.parse(input);
@@ -23,9 +24,23 @@ if (isDevelopment() && fs.existsSync(secretsFile)) {
   process.env.DB_PASS = data.DB_PASS;
   process.env.DB_NAME = data.DB_NAME;
   process.env.GOOGLE_CLIENT_SECRET = data.GOOGLE_CLIENT_SECRET;
+  process.env.AUTH0_CLIENT_SECRET = data.AUTH0_CLIENT_SECRET;
   jwks = data.JWKS;
 } else {
   jwks = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'keys.localhost.json')));
+}
+
+const auth0Issuer = await Issuer.discover(
+  'https://dev-fxrac16ih4t75q3f.us.auth0.com/.well-known/openid-configuration',
+);
+
+function getAuth0Client(req) {
+  return new auth0Issuer.Client({
+    client_id: AUTH0_CLIENT_ID,
+    client_secret: process.env.AUTH0_CLIENT_SECRET,
+    redirect_uris: [getRedirectUrl(req)],
+    response_types: ['code'],
+  });
 }
 
 const privateKeys = jose.createLocalJWKSet(jwks.public);
@@ -37,6 +52,7 @@ const audience = `urn:unreed-${isDevelopment() ? 'dev' : 'prod'}:audience`;
 const maxAge = 2147483647;
 const AUTH_COOKIE = 'UNREED_OIDC_TOKEN';
 const REDIRECT_URI_COOKIE = 'UNREED_REDIRECT_URI';
+const AUTH_NONCE_COOKIE = 'AUTH0_NONCE';
 
 export const authRouter = new Router();
 
@@ -45,12 +61,16 @@ async function localhostLoginPage(req, res) {
 }
 
 async function productionLoginPage(req, res) {
-  const client = new OAuth2Client(CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, getRedirectUrl(req));
-  const authorizationUrl = client.generateAuthUrl({
-    scope: ['openid email'],
-    redirect_uri: getRedirectUrl(req),
+  const client = getAuth0Client(req);
+
+  const nonce = generators.nonce();
+
+  const authorizationUrl = client.authorizationUrl({
+    scope: 'openid email profile',
+    nonce,
   });
 
+  res.cookie(AUTH_NONCE_COOKIE, nonce, { maxAge: 300000, path: '/', httpOnly: true });
   res.redirect(authorizationUrl);
 }
 
@@ -79,18 +99,17 @@ async function localhostCallbackPage(req, res) {
 }
 
 async function productionCallbackPage(req, res) {
+  const nonce = req.cookies[AUTH_NONCE_COOKIE];
   try {
-    const code = req.query.code;
-    const client = new OAuth2Client(
-      CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      getRedirectUrl(req),
-    );
-    const googleToken = await client.getToken(code);
-    const googleClaims = jose.decodeJwt(googleToken.tokens.id_token);
+    const client = getAuth0Client(req);
+    const params = client.callbackParams(req);
+    const tokenSet = await client.callback(getRedirectUrl(req), params, {
+      nonce,
+    });
+    const auth0Claims = tokenSet.claims();
 
     const claims = {
-      email: googleClaims.email,
+      email: auth0Claims.email,
     };
 
     const expirationTime = Date.now() + maxAge;
@@ -110,6 +129,7 @@ async function productionCallbackPage(req, res) {
       secure: true,
     });
     res.clearCookie(REDIRECT_URI_COOKIE);
+    res.clearCookie(AUTH_NONCE_COOKIE);
     res.redirect(req.cookies.UNREED_REDIRECT_URI ?? '/');
   } catch (error) {
     console.error(error);
@@ -119,9 +139,13 @@ async function productionCallbackPage(req, res) {
   }
 }
 
-authRouter.get('/login', isDevelopment() ? localhostLoginPage : productionLoginPage);
-
-authRouter.get('/login/callback', isDevelopment() ? localhostCallbackPage : productionCallbackPage);
+if (isDevelopment()) {
+  authRouter.get('/login', localhostLoginPage);
+  authRouter.get('/login/callback', localhostCallbackPage);
+} else {
+  authRouter.get('/login', productionLoginPage);
+  authRouter.get('/login/callback', productionCallbackPage);
+}
 
 export async function authMiddleware(req, res, next) {
   const token = req.cookies[AUTH_COOKIE];
