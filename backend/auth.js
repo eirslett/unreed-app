@@ -10,7 +10,9 @@ import { isDevelopment } from './utils.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const AUTH0_CLIENT_ID = 'gq575MGFWuiYcXpPTXNoJNYfAuoq19KD';
+const AUTH0_CLIENT_ID = isDevelopment()
+  ? 'gq575MGFWuiYcXpPTXNoJNYfAuoq19KD'
+  : 'Vpjwcxk7wKCkI3epI89TAaF0CSnfzVnK';
 
 let jwks;
 
@@ -31,7 +33,9 @@ if (fs.existsSync(secretsFile)) {
 }
 
 const auth0Issuer = await Issuer.discover(
-  'https://dev-fxrac16ih4t75q3f.us.auth0.com/.well-known/openid-configuration',
+  isDevelopment()
+    ? 'https://dev-fxrac16ih4t75q3f.us.auth0.com/.well-known/openid-configuration'
+    : 'https://unreed.eu.auth0.com/.well-known/openid-configuration',
 );
 
 function getAuth0Client(req) {
