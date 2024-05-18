@@ -5,5 +5,5 @@ export default {
 };
 
 export function Example() {
-  return <NewReedPage />;
+  return <NewReedPage createReed={console.log} />;
 }
