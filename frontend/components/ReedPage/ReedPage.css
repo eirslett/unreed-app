@@ -55,14 +55,14 @@
 .reed-page__h1 {
   margin: 0;
   font-size: var(--font-size-large);
-  font-weight: bold;
+  font-weight: 600;
   color: var(--color-dark);
 }
 
 .reed-page__h2 {
   margin: 0;
   font-size: var(--font-size-large);
-  font-weight: bold;
+  font-weight: 600;
   color: var(--color-base);
 }
 

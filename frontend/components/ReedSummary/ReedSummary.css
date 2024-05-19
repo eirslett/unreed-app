@@ -57,7 +57,7 @@
   grid-area: title;
   margin: 0;
   font-size: var(--font-size-large);
-  font-weight: bold;
+  font-weight: 600;
   color: var(--color-dark);
 }
 .reed-summary__last-update {
