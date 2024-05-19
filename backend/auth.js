@@ -133,6 +133,8 @@ async function productionCallbackPage(req, res) {
       path: '/',
       secure: true,
     });
+    res.cookie(UNREED_USER, claims.email, { path: '/', maxAge: maxAge * 1000, httpOnly: false });
+
     res.clearCookie(REDIRECT_URI_COOKIE);
     res.clearCookie(AUTH_NONCE_COOKIE);
     res.redirect(req.cookies.UNREED_REDIRECT_URI ?? '/');
@@ -152,8 +154,13 @@ if (isDevelopment()) {
   authRouter.get('/login/callback', productionCallbackPage);
 }
 
+console.log('authMiddleware defined');
 export async function authMiddleware(req, res, next) {
+  console.log('authMiddleware()');
+  console.log('req.cookies is ', typeof req.cookies);
+  console.log('found cookies: ', Object.entries(req.cookies));
   const token = req.cookies[AUTH_COOKIE];
+  console.log('token is ', typeof token);
   try {
     if (!token) {
       console.log('no token found - remove UNREED_USER cookie');
