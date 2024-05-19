@@ -6,5 +6,20 @@ export default defineConfig({
   plugins: [react(), visualizer()],
   build: {
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          'react-router-dom': ['react-router-dom'],
+          dexie: ['dexie'],
+          rxdb: [
+            'rxdb',
+            'rxdb/plugins/storage-dexie',
+            'rxdb/plugins/query-builder',
+            'rxdb/plugins/replication',
+          ],
+        },
+      },
+    },
   },
 });
