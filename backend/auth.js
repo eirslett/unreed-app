@@ -154,13 +154,9 @@ if (isDevelopment()) {
   authRouter.get('/login/callback', productionCallbackPage);
 }
 
-console.log('authMiddleware defined');
 export async function authMiddleware(req, res, next) {
-  console.log('authMiddleware()');
-  console.log('req.cookies is ', typeof req.cookies);
-  console.log('found cookies: ', Object.entries(req.cookies));
+  console.log('found cookies: ', Object.keys(req.cookies));
   const token = req.cookies[AUTH_COOKIE];
-  console.log('token is ', typeof token);
   try {
     if (!token) {
       console.log('no token found - remove UNREED_USER cookie');
@@ -171,7 +167,7 @@ export async function authMiddleware(req, res, next) {
         issuer,
         audience,
       });
-      console.log('cookie payload', payload);
+      console.log('validated OK, setting UNREED_USER to', payload.email);
       res.cookie(UNREED_USER, payload.email, { path: '/', maxAge: maxAge * 1000, httpOnly: false });
       req.user = { email: payload.email };
     }

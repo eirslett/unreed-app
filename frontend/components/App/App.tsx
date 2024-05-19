@@ -1,5 +1,5 @@
 import { StrictMode, ReactNode } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, ScrollRestoration } from 'react-router-dom';
 import { Auth } from '../Auth/Auth';
 import { Layout, LayoutTopbar, LayoutContent } from '../Layout/Layout';
 import { DiscardedReeds, ReedOverview } from '../ReedOverview/ReedOverview';
@@ -24,6 +24,7 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <Shell>
+        <ScrollRestoration />
         <ReedOverview />
       </Shell>
     ),
