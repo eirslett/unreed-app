@@ -54,6 +54,7 @@ const issuer = `urn:unreed-${isDevelopment() ? 'dev' : 'prod'}:issuer`;
 const audience = `urn:unreed-${isDevelopment() ? 'dev' : 'prod'}:audience`;
 
 const maxAge = 2147483647;
+const UNREED_USER = 'UNREED_USER';
 const AUTH_COOKIE = 'UNREED_OIDC_TOKEN';
 const REDIRECT_URI_COOKIE = 'UNREED_REDIRECT_URI';
 const AUTH_NONCE_COOKIE = 'AUTH0_NONCE';
@@ -155,19 +156,22 @@ export async function authMiddleware(req, res, next) {
   const token = req.cookies[AUTH_COOKIE];
   try {
     if (!token) {
-      res.clearCookie('UNREED_USER');
+      console.log('no token found - remove UNREED_USER cookie');
+      res.clearCookie(UNREED_USER);
     } else {
+      console.log('validating token');
       const { payload, protectedHeader } = await jose.jwtVerify(token, privateKeys, {
         issuer,
         audience,
       });
-      res.cookie('UNREED_USER', payload.email, { maxAge: maxAge * 1000, httpOnly: false });
+      console.log('cookie payload', payload);
+      res.cookie(UNREED_USER, payload.email, { maxAge: maxAge * 1000, httpOnly: false });
       req.user = { email: payload.email };
     }
   } catch (error) {
     console.warn('Failed to validate JWT token', error);
     res.clearCookie(AUTH_COOKIE);
-    res.clearCookie('UNREED_USER');
+    res.clearCookie(UNREED_USER);
   } finally {
     next();
   }
