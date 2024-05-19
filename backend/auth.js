@@ -165,7 +165,7 @@ export async function authMiddleware(req, res, next) {
         audience,
       });
       console.log('cookie payload', payload);
-      res.cookie(UNREED_USER, payload.email, { maxAge: maxAge * 1000, httpOnly: false });
+      res.cookie(UNREED_USER, payload.email, { path: '/', maxAge: maxAge * 1000, httpOnly: false });
       req.user = { email: payload.email };
     }
   } catch (error) {
