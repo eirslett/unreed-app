@@ -29,12 +29,10 @@ COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/server.ts .
 COPY --from=prerelease /usr/src/app/package.json .
 COPY backend ./backend/
-COPY dist ./dist/
+COPY --from=prerelease /usr/src/app/dist ./dist/
 
 # run the app
 USER bun
 ENV NODE_ENV=production
 EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "server.ts" ]
-# ENTRYPOINT "sh"
-
