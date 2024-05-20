@@ -20,7 +20,7 @@ type UnreedDatabase = RxDatabase<DatabaseCollections>;
 
 async function boot({ username }: { username: string }): Promise<UnreedDatabase> {
   // @ts-expect-error DEV is a boolean which comes from Vite
-  const isEnv = import.meta.env.DEV;
+  const isEnv: boolean = import.meta.env.DEV;
   if (isEnv) {
     const module = await import('rxdb/plugins/dev-mode');
     addRxPlugin(module.RxDBDevModePlugin);

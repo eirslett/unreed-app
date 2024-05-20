@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import * as jose from 'jose';
 import { Issuer, generators } from 'openid-client';
 
@@ -29,7 +29,7 @@ if (fs.existsSync(secretsFile)) {
   process.env.AUTH0_CLIENT_SECRET = data.AUTH0_CLIENT_SECRET;
   jwks = data.JWKS;
 } else {
-  jwks = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'keys.localhost.json')));
+  jwks = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'keys.localhost.json'), 'utf-8'));
 }
 
 const auth0Issuer = await Issuer.discover(
@@ -38,7 +38,7 @@ const auth0Issuer = await Issuer.discover(
     : 'https://unreed.eu.auth0.com/.well-known/openid-configuration',
 );
 
-function getAuth0Client(req) {
+function getAuth0Client(req: Request) {
   return new auth0Issuer.Client({
     client_id: AUTH0_CLIENT_ID,
     client_secret: process.env.AUTH0_CLIENT_SECRET,
@@ -59,13 +59,13 @@ const AUTH_COOKIE = 'UNREED_OIDC_TOKEN';
 const REDIRECT_URI_COOKIE = 'UNREED_REDIRECT_URI';
 const AUTH_NONCE_COOKIE = 'AUTH0_NONCE';
 
-export const authRouter = new Router();
+export const authRouter = Router();
 
-async function localhostLoginPage(req, res) {
+async function localhostLoginPage(req: Request, res: Response) {
   res.redirect('/login/callback');
 }
 
-async function productionLoginPage(req, res) {
+async function productionLoginPage(req: Request, res: Response) {
   const client = getAuth0Client(req);
 
   const nonce = generators.nonce();
@@ -79,11 +79,11 @@ async function productionLoginPage(req, res) {
   res.redirect(authorizationUrl);
 }
 
-function getRedirectUrl(req) {
+function getRedirectUrl(req: Request) {
   return `${req.protocol}://${req.get('host')}/login/callback`;
 }
 
-async function localhostCallbackPage(req, res) {
+async function localhostCallbackPage(req: Request, res: Response) {
   const claims = {
     email: 'test.user@example.com',
   };
@@ -103,7 +103,7 @@ async function localhostCallbackPage(req, res) {
   res.redirect(req.cookies.UNREED_REDIRECT_URI ?? '/');
 }
 
-async function productionCallbackPage(req, res) {
+async function productionCallbackPage(req: Request, res: Response) {
   const nonce = req.cookies[AUTH_NONCE_COOKIE];
   try {
     const client = getAuth0Client(req);
@@ -154,7 +154,7 @@ if (isDevelopment()) {
   authRouter.get('/login/callback', productionCallbackPage);
 }
 
-export async function authMiddleware(req, res, next) {
+export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   console.log('found cookies: ', Object.keys(req.cookies));
   const token = req.cookies[AUTH_COOKIE];
   try {
@@ -167,9 +167,20 @@ export async function authMiddleware(req, res, next) {
         issuer,
         audience,
       });
-      console.log('validated OK, setting UNREED_USER to', payload.email);
-      res.cookie(UNREED_USER, payload.email, { path: '/', maxAge: maxAge * 1000, httpOnly: false });
-      req.user = { email: payload.email };
+
+      const email = payload.email;
+      if (typeof email !== 'string') {
+        console.log('no email in token - remove UNREED_USER cookie');
+        res.clearCookie(UNREED_USER);
+      } else {
+        console.log('validated OK, setting UNREED_USER to', payload.email);
+        res.cookie(UNREED_USER, payload.email, {
+          path: '/',
+          maxAge: maxAge * 1000,
+          httpOnly: false,
+        });
+        req.user = { email };
+      }
     }
   } catch (error) {
     console.warn('Failed to validate JWT token', error);

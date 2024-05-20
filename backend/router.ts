@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mysql from 'mysql';
+import mysql, { Connection } from 'mysql';
 import { parseISO } from 'date-fns';
 
 function getConnection() {
@@ -23,7 +23,7 @@ function getConnection() {
   }
 }
 
-async function withConnection(callback) {
+async function withConnection<T>(callback: (connection: Connection) => Promise<T>) {
   const connection = getConnection();
   connection.connect();
   try {
@@ -33,7 +33,7 @@ async function withConnection(callback) {
   }
 }
 
-async function query(connection, sql, params) {
+async function query(connection: Connection, sql: string, params: any) {
   return new Promise((resolve, reject) => {
     connection.query(sql, params, function (error, results) {
       if (error) {
@@ -45,7 +45,27 @@ async function query(connection, sql, params) {
   });
 }
 
-export const router = new Router();
+export const router = Router();
+
+// This is what we store in the database
+type ReedLogRow = {
+  entry_id: string;
+  google_profile_id: string;
+  reed_id: string;
+  entry_type: string;
+  data: string;
+  entry_timestamp: Date;
+  commit_time: Date;
+};
+
+// This is what's accepted by the server, and what's also returned to the client
+interface LogEntryBase {
+  entry_id: string;
+  entry_type: string;
+  entry_timestamp: string;
+  reed_id: string;
+  data: Record<string, unknown>;
+}
 
 router.get('/api/reed_log.php', (req, res) => {
   if (!req.user) {
@@ -59,7 +79,7 @@ router.get('/api/reed_log.php', (req, res) => {
   connection.query(
     'SELECT entry_id, entry_timestamp, reed_id, entry_type, data, commit_time from reed_log WHERE google_profile_id=? ORDER BY entry_timestamp ASC',
     [req.user.email],
-    function (error, results) {
+    function (error, results: ReedLogRow[]) {
       if (error) {
         console.error(error);
         res.status(500).send({ message: 'Something went wrong on the server.' });
@@ -85,16 +105,22 @@ router.get('/api/reed_log.php', (req, res) => {
 
 router.post('/api/push', async (req, res) => {
   try {
-    const changeRows = req.body;
+    const user = req.user;
+    if (user === undefined) {
+      res.status(401).send({ title: 'Unauthorized', detail: 'Invalid token.' });
+      return;
+    }
+
+    const changeRows = req.body as [{ assumedMasterState: any; newDocumentState: LogEntryBase }];
     await withConnection(async (connection) => {
       const conflicts = [];
 
       const ids = changeRows.map((row) => row.newDocumentState.entry_id);
-      const existingEntries = await query(
+      const existingEntries: ReedLogRow[] = (await query(
         connection,
         'select entry_id, entry_timestamp, reed_id, entry_type, data from reed_log where google_profile_id=? and entry_id in (?)',
-        [req.user.email, ids],
-      );
+        [user.email, ids],
+      )) as ReedLogRow[];
 
       for (const { entry_id, entry_timestamp, reed_id, entry_type, data } of existingEntries) {
         conflicts.push({
@@ -110,18 +136,19 @@ router.post('/api/push', async (req, res) => {
         if (existingEntries.some((row) => row.entry_id === newDocumentState.entry_id)) {
           continue;
         } else {
-          const insertResult = await query(
+          const insertResult = (await query(
             connection,
             'INSERT INTO reed_log (entry_id, google_profile_id, entry_timestamp, reed_id, entry_type, data) VALUES (?, ?, ?, ?, ?, ?)',
             [
               newDocumentState.entry_id,
-              req.user.email,
+              user.email,
               formatMySQLDatetime(parseISO(newDocumentState.entry_timestamp)),
               newDocumentState.reed_id,
               newDocumentState.entry_type,
               JSON.stringify(newDocumentState.data),
             ],
-          );
+          )) as { affectedRows: number };
+
           console.log(
             'Inserted new row (' +
               newDocumentState.entry_id +
@@ -139,13 +166,14 @@ router.post('/api/push', async (req, res) => {
   }
 });
 
-function formatMySQLDatetime(datetime) {
+function formatMySQLDatetime(datetime: Date) {
   return datetime.toISOString().replace('T', ' ').replace('Z', '');
 }
 
 router.get('/api/pull', async (req, res) => {
   try {
-    if (!req.user) {
+    const user = req.user;
+    if (user === undefined) {
       res.status(401).send({ title: 'Unauthorized', detail: 'Invalid token.' });
       return;
     }
@@ -154,7 +182,7 @@ router.get('/api/pull', async (req, res) => {
     let commitTime = req.query.commit_time ?? '1000-01-01 00:00:00.000';
     let entryTimestamp = req.query.entry_timestamp ?? '1000-01-01 00:00:00.000';
 
-    const limit = parseInt(req.query.limit);
+    const limit = typeof req.query.limit === 'string' ? parseInt(req.query.limit) : 100;
 
     await withConnection(async (connection) => {
       const queryString = `
@@ -172,8 +200,8 @@ router.get('/api/pull', async (req, res) => {
       ORDER BY commit_time ASC, entry_timestamp ASC, entry_id ASC
       LIMIT ?`;
 
-      const results = await query(connection, queryString, [
-        req.user.email,
+      const results = (await query(connection, queryString, [
+        user.email,
         commitTime,
         commitTime,
         entryTimestamp,
@@ -181,7 +209,7 @@ router.get('/api/pull', async (req, res) => {
         entryTimestamp,
         id,
         limit,
-      ]);
+      ])) as ReedLogRow[];
 
       const entries = results.map(
         (

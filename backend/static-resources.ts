@@ -1,13 +1,14 @@
 import { isDevelopment } from './utils.js';
 import fs from 'fs';
 import path from 'path';
-import express from 'express';
+import express, { Application, Request, Response } from 'express';
 import { fileURLToPath } from 'url';
+import { ViteDevServer } from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-let _viteServer;
+let _viteServer: ViteDevServer | undefined;
 async function getViteServer() {
   if (!_viteServer) {
     const { createServer: createViteServer } = await import('vite');
@@ -19,7 +20,7 @@ async function getViteServer() {
   return _viteServer;
 }
 
-export async function setupStaticResources(app) {
+export async function setupStaticResources(app: Application) {
   if (isDevelopment()) {
     const viteServer = await getViteServer();
     app.use(viteServer.middlewares);
@@ -28,9 +29,9 @@ export async function setupStaticResources(app) {
   }
 }
 
-export async function setupIndexHtml(app) {
+export async function setupIndexHtml(app: Application) {
   if (isDevelopment()) {
-    async function serveIndexHtml(req, res) {
+    async function serveIndexHtml(req: Request, res: Response) {
       const indexHtml = fs.readFileSync(path.resolve(__dirname, '..', 'index.html'), 'utf-8');
       const viteServer = await getViteServer();
       const processed = await viteServer.transformIndexHtml('/', indexHtml);

@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { isDevelopment } from './backend/utils.js';
 import { app } from './backend/app.js';
 
-const port = process.env.PORT || 13176;
+const port = process.env.PORT !== undefined ? parseInt(process.env.PORT) : 13176;
 
 if (isDevelopment()) {
   app.listen(port, '127.0.0.1', () => {
