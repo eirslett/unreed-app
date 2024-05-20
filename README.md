@@ -11,7 +11,7 @@ This is the main repository for the Unreed app.
 Prerequisites/tools you have to install:
 
 - git
-- Node.js (and npm)
+- Bun
 - A code editor (for example: Visual Studio Code)
 - MySQL
 
@@ -29,34 +29,34 @@ Prerequisites/tools you have to install:
 ```bash
 git clone git@github.com:eirslett/unreed-app.git
 cd unreed-app
-npm install
+bun install
 ```
 
 ## Available commands:
 
-### `npm run dev`
+### `bun run dev`
 
 This will start Unreed locally. Will be available on http://localhost:3000.
 
-### `npm run storybook`
+### `bun run storybook`
 
 The Storybook instance should now run on http://localhost:6006.
 
 The built version of Storybook is also hosted on [https://eirslett.github.io/unreed-app/](https://eirslett.github.io/unreed-app/).
 
-### `npm run lint:typescript`
+### `bun run lint:typescript`
 
 Any type errors should show up in the console.
 Also, it's a good idea to configure your code editor with a TypeScript
 plugin, which will highlight type errors directly in the editor.
 
-### `npm run lint:prettier`
+### `bun run lint:prettier`
 
 Any formatting errrors should show up in the console.
 Also, it's a good idea to configure your code editor with a Prettier
 plugin, and set it up to automatically format the code on every save.
 
-### `npm run build`
+### `bun run build`
 
 This will take the index.html file, all the TypeScript and CSS files,
 compress and bundle them so they are ready to deploy to production.
