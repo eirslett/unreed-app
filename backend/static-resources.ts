@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import express, { Application, Request, Response } from 'express';
 import { fileURLToPath } from 'url';
-import { ViteDevServer } from 'vite';
+import { type ViteDevServer } from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

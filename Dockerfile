@@ -1,33 +1,40 @@
-FROM node:22-alpine as builder
+FROM oven/bun:1.1.8-slim as base
+WORKDIR /usr/src/app
 
-WORKDIR /app
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lockb /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
 
-COPY package.json package-lock.json vite.config.js tsconfig.json /app/
+# install with --production (exclude devDependencies)
+RUN mkdir -p /temp/prod
+COPY package.json bun.lockb /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
 
-RUN npm ci
+# copy node_modules from temp directory
+# then copy all (non-ignored) project files into the image
+FROM base AS prerelease
+COPY --from=install /temp/dev/node_modules node_modules
+COPY . .
 
-COPY index.html /app/
-
-COPY frontend /app/frontend/
-
-COPY public /app/public/
-
-RUN npm run build
-
-FROM node:22-alpine
-
-WORKDIR /app
-
-COPY --from=builder /app/package.json /app/package-lock.json /app/
-
-RUN npm ci --omit=dev
-
-COPY backend /app/backend/
-
-COPY server.js /app/server.js
-
-COPY --from=builder /app/dist /app/dist/
-
+# [optional] tests & build
 ENV NODE_ENV=production
+RUN bun run build
 
-CMD node server.js
+# copy production dependencies and source code into final image
+FROM base AS release
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app/server.ts .
+COPY --from=prerelease /usr/src/app/package.json .
+COPY backend ./backend/
+COPY dist ./dist/
+
+# run the app
+USER bun
+ENV NODE_ENV=production
+EXPOSE 3000/tcp
+ENTRYPOINT [ "bun", "run", "server.ts" ]
+# ENTRYPOINT "sh"
+
