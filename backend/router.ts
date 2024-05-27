@@ -148,13 +148,6 @@ router.post('/api/push', async (req, res) => {
               JSON.stringify(newDocumentState.data),
             ],
           )) as { affectedRows: number };
-
-          console.log(
-            'Inserted new row (' +
-              newDocumentState.entry_id +
-              '), affected rows: ' +
-              insertResult.affectedRows,
-          );
         }
       }
 

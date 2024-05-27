@@ -155,14 +155,12 @@ if (isDevelopment()) {
 }
 
 export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
-  console.log('found cookies: ', Object.keys(req.cookies));
   const token = req.cookies[AUTH_COOKIE];
   try {
     if (!token) {
       console.log('no token found - remove UNREED_USER cookie');
       res.clearCookie(UNREED_USER);
     } else {
-      console.log('validating token');
       const { payload, protectedHeader } = await jose.jwtVerify(token, privateKeys, {
         issuer,
         audience,
@@ -173,7 +171,6 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
         console.log('no email in token - remove UNREED_USER cookie');
         res.clearCookie(UNREED_USER);
       } else {
-        console.log('validated OK, setting UNREED_USER to', payload.email);
         res.cookie(UNREED_USER, payload.email, {
           path: '/',
           maxAge: maxAge * 1000,
