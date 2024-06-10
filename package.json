@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@storybook/react-vite": "8.1.5",
+    "@storybook/react-vite": "8.1.6",
     "@types/bun": "latest",
     "@types/cookie-parser": "^1.4.7",
     "@types/mysql": "^2.15.26",
