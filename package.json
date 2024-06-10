@@ -43,7 +43,7 @@
     "rxdb": "^15.22.0",
     "rxjs": "^7.8.1",
     "timeago.js": "^4.0.2",
-    "uuid": "^9.0.1"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
