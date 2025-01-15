@@ -81,7 +81,7 @@ router.post('/api/push', async (req, res) => {
           entry_timestamp,
           reed_id,
           entry_type,
-          data: data,
+          data,
         });
 
         conflicts.push({
@@ -89,7 +89,7 @@ router.post('/api/push', async (req, res) => {
           entry_timestamp,
           reed_id,
           entry_type,
-          data: JSON.parse(data),
+          data,
         });
       }
 
