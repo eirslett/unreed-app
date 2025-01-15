@@ -76,6 +76,14 @@ router.post('/api/push', async (req, res) => {
       )[0] as ReedLogRow[];
 
       for (const { entry_id, entry_timestamp, reed_id, entry_type, data } of existingEntries) {
+        console.log('Looks like a conflict?', {
+          entry_id,
+          entry_timestamp,
+          reed_id,
+          entry_type,
+          data: data,
+        });
+
         conflicts.push({
           entry_id,
           entry_timestamp,
