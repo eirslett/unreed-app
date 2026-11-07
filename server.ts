@@ -1,6 +1,6 @@
 import process from 'process';
-import { isDevelopment } from './backend/utils.js';
-import { app } from './backend/app.js';
+import { isDevelopment } from './backend/utils.ts';
+import { app } from './backend/app.ts';
 
 const port = process.env.PORT !== undefined ? parseInt(process.env.PORT) : 13176;
 

@@ -1,8 +1,8 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import { authRouter, authMiddleware } from './auth';
-import { router } from './router';
-import { setupIndexHtml, setupStaticResources } from './static-resources';
+import { authRouter, authMiddleware } from './auth.ts';
+import { router } from './router.ts';
+import { setupIndexHtml, setupStaticResources } from './static-resources.ts';
 
 export const app = express();
 app.enable('trust proxy');
