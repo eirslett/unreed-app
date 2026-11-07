@@ -75,12 +75,7 @@ interface DiscardEntry extends LogEntryBase {
 }
 
 export type LogEntry =
-  | CreateLogEntry
-  | CommentEntry
-  | ScrapeEntry
-  | PlayEntry
-  | ClipEntry
-  | DiscardEntry;
+  CreateLogEntry | CommentEntry | ScrapeEntry | PlayEntry | ClipEntry | DiscardEntry;
 
 export type RecentReedsState = Array<string>;
 export type DiscardedReedsState = Array<string>;
