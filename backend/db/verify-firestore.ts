@@ -10,7 +10,6 @@ import {
   pullLogs,
   sortKey,
 } from './reed-log.ts';
-import { useGcloudFirestore } from './firestore-auth.ts';
 
 type MysqlLogRow = {
   entry_id: string;
@@ -89,8 +88,6 @@ for (const row of mysqlRows) {
   list.push(row);
   byUser.set(row.google_profile_id, list);
 }
-
-useGcloudFirestore();
 
 let compared = 0;
 for (const [profileId, expected] of byUser) {

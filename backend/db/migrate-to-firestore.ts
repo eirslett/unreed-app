@@ -1,7 +1,6 @@
 import fs from 'fs';
 import mysql from 'mysql2/promise';
 import { formatMySQLDatetime, replaceLogs } from './reed-log.ts';
-import { useGcloudFirestore } from './firestore-auth.ts';
 
 type MysqlLogRow = {
   entry_id: string;
@@ -40,7 +39,6 @@ const [rows] = await connection.query(
 await connection.end();
 
 const logRows = rows as MysqlLogRow[];
-useGcloudFirestore();
 await replaceLogs(
   logRows.map((row) => ({
     entry_id: row.entry_id,

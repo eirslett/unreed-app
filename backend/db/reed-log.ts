@@ -36,10 +36,6 @@ export function sortKey(commitTime: string, entryTimestamp: string, entryId: str
   return `${commitTime}${SORT_SEP}${entryTimestamp}${SORT_SEP}${entryId}`;
 }
 
-export function setFirestore(db: Firestore) {
-  firestore = db;
-}
-
 function database() {
   if (firestore === undefined) {
     firestore = new Firestore({
