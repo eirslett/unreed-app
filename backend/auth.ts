@@ -21,10 +21,6 @@ if (fs.existsSync(secretsFile)) {
   console.log(`Loading secrets from ${secretsFile}`);
   const input = fs.readFileSync(secretsFile, 'utf-8');
   const data = JSON.parse(input);
-  process.env.DB_HOST = data.DB_HOST;
-  process.env.DB_USER = data.DB_USER;
-  process.env.DB_PASS = data.DB_PASS;
-  process.env.DB_NAME = data.DB_NAME;
   process.env.GOOGLE_CLIENT_SECRET = data.GOOGLE_CLIENT_SECRET;
   process.env.AUTH0_CLIENT_SECRET = data.AUTH0_CLIENT_SECRET;
   jwks = data.JWKS;
