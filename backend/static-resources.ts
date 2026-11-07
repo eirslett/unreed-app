@@ -1,14 +1,18 @@
-import { isDevelopment } from './utils.js';
+import { isDevelopment } from './utils.ts';
 import fs from 'fs';
 import path from 'path';
-import express, { Application, Request, Response } from 'express';
+import express, { type Application, type Request, type Response } from 'express';
 import { fileURLToPath } from 'url';
-import { type ViteDevServer } from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-let _viteServer: ViteDevServer | undefined;
+let _viteServer:
+  | {
+      middlewares: express.RequestHandler;
+      transformIndexHtml(url: string, html: string): Promise<string>;
+    }
+  | undefined;
 async function getViteServer() {
   if (!_viteServer) {
     const { createServer: createViteServer } = await import('vite');

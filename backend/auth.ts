@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { NextFunction, Request, Response, Router } from 'express';
+import { Router, type NextFunction, type Request, type Response } from 'express';
 import * as jose from 'jose';
 import { Issuer, generators } from 'openid-client';
 
-import { isDevelopment } from './utils.js';
+import { isDevelopment } from './utils.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

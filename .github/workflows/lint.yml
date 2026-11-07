@@ -9,13 +9,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          bun-version: 1.1.8
+          node-version: 26.13.0
+          cache: npm
       - name: Install dependencies
-        run: bun install
+        run: npm ci
       - name: Run Prettier
-        run: bun run lint:prettier
+        run: npm run lint:prettier
       - name: Run TypeScript
-        run: bun run lint:typescript
+        run: npm run lint:typescript
