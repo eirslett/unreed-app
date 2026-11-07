@@ -1,6 +1,9 @@
 # Simple workflow for deploying static content to GitHub Pages
 name: Storybook
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
